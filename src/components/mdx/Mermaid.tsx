@@ -18,7 +18,7 @@ export function Mermaid({ titulo, children }: Props) {
 
   useEffect(() => {
     let cancelado = false;
-    const escuro = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const escuro = document.documentElement.classList.contains("dark");
 
     import("mermaid")
       .then(async ({ default: mermaid }) => {
@@ -45,7 +45,7 @@ export function Mermaid({ titulo, children }: Props) {
       <figure
         role="img"
         aria-label={titulo}
-        className="my-6 overflow-x-auto"
+        className="my-8 overflow-x-auto"
         // SVG gerado pelo Mermaid em securityLevel "strict" (sanitizado pelo DOMPurify).
         dangerouslySetInnerHTML={{ __html: svg }}
       />
@@ -53,7 +53,7 @@ export function Mermaid({ titulo, children }: Props) {
   }
 
   return (
-    <figure className="my-6">
+    <figure className="mermaid-fallback my-8">
       <pre aria-label={titulo}>
         <code>{children.trim()}</code>
       </pre>

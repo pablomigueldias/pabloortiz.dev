@@ -1,49 +1,278 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
-/* Provisório: cores e fontes definitivas saem na Etapa 2 (design system). */
+/* Tema por classe no <html> (o script do layout aplica antes de pintar). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Identidade herdada do my-portifolio (zinc + emerald), com contraste AA conferido:
+   no claro o verde é emerald-700 (o emerald-600 antigo dava 3,4:1 como texto);
+   no escuro o texto do botão é escuro (branco sobre emerald-500 dava 2,5:1). */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4f4f5; /* zinc-100 */
+  --foreground: #18181b; /* zinc-900 */
+  --card: #ffffff;
+  --card-foreground: #18181b;
+  --primary: #047857; /* emerald-700 */
+  --primary-foreground: #ffffff;
+  --muted: #e4e4e7; /* zinc-200 */
+  --muted-foreground: #52525b; /* zinc-600 */
+  --border: #d4d4d8; /* zinc-300 */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #09090b; /* zinc-950 */
+  --foreground: #fafafa; /* zinc-50 */
+  --card: #18181b; /* zinc-900 */
+  --card-foreground: #fafafa;
+  --primary: #10b981; /* emerald-500 */
+  --primary-foreground: #09090b;
+  --muted: #27272a; /* zinc-800 */
+  --muted-foreground: #a1a1aa; /* zinc-400 */
+  --border: #3f3f46; /* zinc-700 */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif;
+  --font-mono:
+    ui-monospace, "SFMono-Regular", "Cascadia Code", "Fira Code", Menlo,
+    monospace;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: system-ui, sans-serif;
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--color-primary) 30%, transparent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
 }
 
-/* Shiki (rehype-pretty-code): tema claro por padrão, escuro pela preferência do sistema.
-   Estilo definitivo na Etapa 2. */
-[data-rehype-pretty-code-figure] pre {
-  overflow-x: auto;
-  padding: 1rem 0;
+::-webkit-scrollbar {
+  width: 8px;
 }
-[data-rehype-pretty-code-figure] code {
-  display: grid;
+::-webkit-scrollbar-track {
+  background: var(--color-muted);
 }
-[data-rehype-pretty-code-figure] [data-line] {
-  padding: 0 1rem;
+::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: color-mix(
+    in oklab,
+    var(--color-muted-foreground) 30%,
+    transparent
+  );
 }
-[data-rehype-pretty-code-figure] [data-highlighted-line] {
-  background: color-mix(in oklab, currentColor 10%, transparent);
-}
+
+/* Shiki: as cores dos dois temas vêm como variáveis; o tema ativo escolhe. */
 code[data-theme] span {
   color: var(--shiki-light);
 }
-@media (prefers-color-scheme: dark) {
-  code[data-theme] span {
-    color: var(--shiki-dark);
-  }
+.dark code[data-theme] span {
+  color: var(--shiki-dark);
+}
+
+/* ---------- Corpo do post (prose), no estilo do renderizador do site antigo ---------- */
+.post {
+  --tw-prose-body: var(--color-foreground);
+  --tw-prose-headings: var(--color-foreground);
+  --tw-prose-links: var(--color-primary);
+  --tw-prose-bold: var(--color-foreground);
+  --tw-prose-bullets: var(--color-primary);
+  --tw-prose-counters: var(--color-primary);
+  --tw-prose-quotes: var(--color-foreground);
+  --tw-prose-quote-borders: var(--color-primary);
+  --tw-prose-hr: var(--color-border);
+  --tw-prose-th-borders: var(--color-border);
+  --tw-prose-td-borders: var(--color-border);
+  --tw-prose-captions: var(--color-muted-foreground);
+  --tw-prose-code: var(--color-primary);
+  --tw-prose-invert-body: var(--color-foreground);
+  --tw-prose-invert-headings: var(--color-foreground);
+  --tw-prose-invert-links: var(--color-primary);
+  --tw-prose-invert-bold: var(--color-foreground);
+  --tw-prose-invert-bullets: var(--color-primary);
+  --tw-prose-invert-counters: var(--color-primary);
+  --tw-prose-invert-quotes: var(--color-foreground);
+  --tw-prose-invert-quote-borders: var(--color-primary);
+  --tw-prose-invert-hr: var(--color-border);
+  --tw-prose-invert-th-borders: var(--color-border);
+  --tw-prose-invert-td-borders: var(--color-border);
+  --tw-prose-invert-captions: var(--color-muted-foreground);
+  --tw-prose-invert-code: var(--color-primary);
+}
+
+.post h2 {
+  color: var(--color-primary);
+  padding-bottom: 0.4em;
+  border-bottom: 1px solid var(--color-border);
+}
+.post :is(h2, h3, h4) a.ancora {
+  color: inherit;
+  text-decoration: none;
+}
+.post :is(h2, h3, h4) a.ancora:hover::after {
+  content: " #";
+  color: var(--color-muted-foreground);
+}
+.post a:not(.ancora) {
+  text-underline-offset: 4px;
+  text-decoration-color: color-mix(
+    in oklab,
+    var(--color-primary) 40%,
+    transparent
+  );
+}
+.post a:not(.ancora):hover {
+  text-decoration-color: var(--color-primary);
+}
+.post blockquote {
+  font-style: italic;
+  background: color-mix(in oklab, var(--color-muted) 50%, transparent);
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0.5rem 1rem;
+}
+.post :not(pre) > code {
+  background: var(--color-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 0.3rem;
+  padding: 0.1em 0.35em;
+  font-weight: 600;
+}
+.post :not(pre) > code::before,
+.post :not(pre) > code::after {
+  content: none;
+}
+.post thead th {
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.post table {
+  display: block;
+  overflow-x: auto;
+}
+
+/* Bloco de código em "janela", como no site antigo. */
+.post [data-rehype-pretty-code-figure] {
+  margin: 2rem 0;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  background: var(--color-card);
+  overflow: hidden;
+}
+.post [data-rehype-pretty-code-figure]::before,
+.post [data-rehype-pretty-code-title] {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.5rem;
+  padding: 0 1rem;
+  background: color-mix(in oklab, var(--color-muted) 80%, transparent);
+  border-bottom: 1px solid var(--color-border);
+  font: 700 0.75rem var(--font-mono);
+  text-transform: uppercase;
+  color: var(--color-muted-foreground);
+}
+/* Três bolinhas: no título quando existe, senão numa barra própria. */
+.post
+  [data-rehype-pretty-code-figure]:not(
+    :has([data-rehype-pretty-code-title])
+  )::before,
+.post [data-rehype-pretty-code-title]::before {
+  content: "";
+  width: 2.75rem;
+  height: 0.625rem;
+  flex-shrink: 0;
+  background:
+    radial-gradient(circle, #ef4444cc 0.3rem, transparent 0.32rem) 0 50% /
+      0.625rem 0.625rem no-repeat,
+    radial-gradient(circle, #eab308cc 0.3rem, transparent 0.32rem) 1rem 50% /
+      0.625rem 0.625rem no-repeat,
+    radial-gradient(circle, #22c55ecc 0.3rem, transparent 0.32rem) 2rem 50% /
+      0.625rem 0.625rem no-repeat;
+}
+.post
+  [data-rehype-pretty-code-figure]:has(
+    [data-rehype-pretty-code-title]
+  )::before {
+  content: none;
+}
+.post [data-rehype-pretty-code-figure] pre {
+  margin: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 1rem 0;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+.post [data-rehype-pretty-code-figure] code {
+  display: grid;
+}
+.post [data-line] {
+  padding: 0 1rem;
+}
+.post [data-highlighted-line] {
+  background: color-mix(in oklab, var(--color-primary) 12%, transparent);
+  box-shadow: inset 3px 0 0 var(--color-primary);
+}
+
+/* Componentes MDX */
+.post [data-callout] {
+  border-radius: 0 0.75rem 0.75rem 0;
+  border-left-width: 4px;
+  background: color-mix(in oklab, var(--color-muted) 50%, transparent);
+  padding: 0.75rem 1.25rem;
+}
+.post [data-callout] > p:first-child {
+  margin: 0 0 0.25rem;
+}
+.post [data-callout="nota"] {
+  border-left-color: var(--color-muted-foreground);
+}
+.post [data-callout="dica"] {
+  border-left-color: var(--color-primary);
+}
+.post [data-callout="cuidado"] {
+  border-left-color: #f59e0b;
+}
+.post figure img {
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-border);
+}
+.post figure[role="img"],
+.post .mermaid-fallback {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+.post .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
 }

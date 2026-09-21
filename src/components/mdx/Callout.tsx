@@ -12,12 +12,8 @@ type Props = {
 // Equivalente ao callout "> [!resumo]" do Obsidian. Visual definitivo na Etapa 2.
 export function Callout({ tipo = "nota", titulo, children }: Props) {
   return (
-    <aside
-      role="note"
-      data-callout={tipo}
-      className="my-6 border-l-4 px-4 py-2"
-    >
-      <p className="font-semibold">{titulo ?? ROTULOS[tipo]}</p>
+    <aside role="note" data-callout={tipo} className="my-8">
+      <p className="text-foreground font-semibold">{titulo ?? ROTULOS[tipo]}</p>
       <div>{children}</div>
     </aside>
   );
