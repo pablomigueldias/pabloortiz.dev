@@ -1,5 +1,5 @@
 docs/
 .next/
 .open-next/
-.wrangler/
 package-lock.json
+.wrangler/
