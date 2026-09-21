@@ -1,0 +1,41 @@
+# --- Segredos: nunca versionar ---
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+*.pem
+*.key
+privacidade.denylist.txt
+
+# --- Planejamento e rascunhos locais ---
+docs/
+rascunhos-locais/
+
+# --- Dados que não pertencem a um repo público ---
+*.dump
+*.sql
+*.sqlite
+*.db
+
+# --- Dependências e builds ---
+node_modules/
+.next/
+.open-next/
+.wrangler/
+out/
+build/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# --- Logs e sistema ---
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# --- Editor ---
+.vscode/*
+!.vscode/extensions.json
+.idea/
