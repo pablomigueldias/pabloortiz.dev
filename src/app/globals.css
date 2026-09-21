@@ -93,3 +93,186 @@ code[data-theme] span {
 .dark code[data-theme] span {
   color: var(--shiki-dark);
 }
+
+/* ---------- Corpo do post (prose), no estilo do renderizador do site antigo ---------- */
+.post {
+  --tw-prose-body: var(--color-foreground);
+  --tw-prose-headings: var(--color-foreground);
+  --tw-prose-links: var(--color-primary);
+  --tw-prose-bold: var(--color-foreground);
+  --tw-prose-bullets: var(--color-primary);
+  --tw-prose-counters: var(--color-primary);
+  --tw-prose-quotes: var(--color-foreground);
+  --tw-prose-quote-borders: var(--color-primary);
+  --tw-prose-hr: var(--color-border);
+  --tw-prose-th-borders: var(--color-border);
+  --tw-prose-td-borders: var(--color-border);
+  --tw-prose-captions: var(--color-muted-foreground);
+  --tw-prose-code: var(--color-primary);
+  --tw-prose-invert-body: var(--color-foreground);
+  --tw-prose-invert-headings: var(--color-foreground);
+  --tw-prose-invert-links: var(--color-primary);
+  --tw-prose-invert-bold: var(--color-foreground);
+  --tw-prose-invert-bullets: var(--color-primary);
+  --tw-prose-invert-counters: var(--color-primary);
+  --tw-prose-invert-quotes: var(--color-foreground);
+  --tw-prose-invert-quote-borders: var(--color-primary);
+  --tw-prose-invert-hr: var(--color-border);
+  --tw-prose-invert-th-borders: var(--color-border);
+  --tw-prose-invert-td-borders: var(--color-border);
+  --tw-prose-invert-captions: var(--color-muted-foreground);
+  --tw-prose-invert-code: var(--color-primary);
+}
+
+.post h2 {
+  color: var(--color-primary);
+  padding-bottom: 0.4em;
+  border-bottom: 1px solid var(--color-border);
+}
+.post :is(h2, h3, h4) a.ancora {
+  color: inherit;
+  text-decoration: none;
+}
+.post :is(h2, h3, h4) a.ancora:hover::after {
+  content: " #";
+  color: var(--color-muted-foreground);
+}
+.post a:not(.ancora) {
+  text-underline-offset: 4px;
+  text-decoration-color: color-mix(
+    in oklab,
+    var(--color-primary) 40%,
+    transparent
+  );
+}
+.post a:not(.ancora):hover {
+  text-decoration-color: var(--color-primary);
+}
+.post blockquote {
+  font-style: italic;
+  background: color-mix(in oklab, var(--color-muted) 50%, transparent);
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0.5rem 1rem;
+}
+.post :not(pre) > code {
+  background: var(--color-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 0.3rem;
+  padding: 0.1em 0.35em;
+  font-weight: 600;
+}
+.post :not(pre) > code::before,
+.post :not(pre) > code::after {
+  content: none;
+}
+.post thead th {
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.post table {
+  display: block;
+  overflow-x: auto;
+}
+
+/* Bloco de código em "janela", como no site antigo. */
+.post [data-rehype-pretty-code-figure] {
+  margin: 2rem 0;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  background: var(--color-card);
+  overflow: hidden;
+}
+.post [data-rehype-pretty-code-figure]::before,
+.post [data-rehype-pretty-code-title] {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.5rem;
+  padding: 0 1rem;
+  background: color-mix(in oklab, var(--color-muted) 80%, transparent);
+  border-bottom: 1px solid var(--color-border);
+  font: 700 0.75rem var(--font-mono);
+  text-transform: uppercase;
+  color: var(--color-muted-foreground);
+}
+/* Três bolinhas: no título quando existe, senão numa barra própria. */
+.post
+  [data-rehype-pretty-code-figure]:not(
+    :has([data-rehype-pretty-code-title])
+  )::before,
+.post [data-rehype-pretty-code-title]::before {
+  content: "";
+  width: 2.75rem;
+  height: 0.625rem;
+  flex-shrink: 0;
+  background:
+    radial-gradient(circle, #ef4444cc 0.3rem, transparent 0.32rem) 0 50% /
+      0.625rem 0.625rem no-repeat,
+    radial-gradient(circle, #eab308cc 0.3rem, transparent 0.32rem) 1rem 50% /
+      0.625rem 0.625rem no-repeat,
+    radial-gradient(circle, #22c55ecc 0.3rem, transparent 0.32rem) 2rem 50% /
+      0.625rem 0.625rem no-repeat;
+}
+.post
+  [data-rehype-pretty-code-figure]:has(
+    [data-rehype-pretty-code-title]
+  )::before {
+  content: none;
+}
+.post [data-rehype-pretty-code-figure] pre {
+  margin: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 1rem 0;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+.post [data-rehype-pretty-code-figure] code {
+  display: grid;
+}
+.post [data-line] {
+  padding: 0 1rem;
+}
+.post [data-highlighted-line] {
+  background: color-mix(in oklab, var(--color-primary) 12%, transparent);
+  box-shadow: inset 3px 0 0 var(--color-primary);
+}
+
+/* Componentes MDX */
+.post [data-callout] {
+  border-radius: 0 0.75rem 0.75rem 0;
+  border-left-width: 4px;
+  background: color-mix(in oklab, var(--color-muted) 50%, transparent);
+  padding: 0.75rem 1.25rem;
+}
+.post [data-callout] > p:first-child {
+  margin: 0 0 0.25rem;
+}
+.post [data-callout="nota"] {
+  border-left-color: var(--color-muted-foreground);
+}
+.post [data-callout="dica"] {
+  border-left-color: var(--color-primary);
+}
+.post [data-callout="cuidado"] {
+  border-left-color: #f59e0b;
+}
+.post figure img {
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-border);
+}
+.post figure[role="img"],
+.post .mermaid-fallback {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+.post .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
