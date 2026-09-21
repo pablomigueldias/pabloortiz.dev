@@ -17,17 +17,21 @@
     "prettier": "^3.9.8",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4.3.3",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "yaml": "2.9.1"
   },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "next typegen && tsc --noEmit",
+    "typecheck": "npm run conteudo && next typegen && tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "lefthook install"
+    "prepare": "lefthook install",
+    "conteudo": "node scripts/gerar-indice-conteudo.ts",
+    "predev": "npm run conteudo",
+    "prebuild": "npm run conteudo"
   },
   "dependencies": {
     "@mdx-js/loader": "3.1.1",
@@ -38,6 +42,8 @@
     "react-dom": "19.3.0",
     "remark-frontmatter": "5.0.0",
     "remark-gfm": "4.0.1",
-    "remark-mdx-frontmatter": "5.2.0"
-  }
+    "remark-mdx-frontmatter": "5.2.0",
+    "zod": "4.6.5"
+  },
+  "type": "module"
 }
