@@ -23,3 +23,27 @@ body {
   color: var(--foreground);
   font-family: system-ui, sans-serif;
 }
+
+/* Shiki (rehype-pretty-code): tema claro por padrão, escuro pela preferência do sistema.
+   Estilo definitivo na Etapa 2. */
+[data-rehype-pretty-code-figure] pre {
+  overflow-x: auto;
+  padding: 1rem 0;
+}
+[data-rehype-pretty-code-figure] code {
+  display: grid;
+}
+[data-rehype-pretty-code-figure] [data-line] {
+  padding: 0 1rem;
+}
+[data-rehype-pretty-code-figure] [data-highlighted-line] {
+  background: color-mix(in oklab, currentColor 10%, transparent);
+}
+code[data-theme] span {
+  color: var(--shiki-light);
+}
+@media (prefers-color-scheme: dark) {
+  code[data-theme] span {
+    color: var(--shiki-dark);
+  }
+}
