@@ -18,6 +18,9 @@ rascunhos-locais/
 *.sqlite
 *.db
 
+# --- Arquivos gerados ---
+src/content/index.generated.ts
+
 # --- Dependências e builds ---
 node_modules/
 .next/
