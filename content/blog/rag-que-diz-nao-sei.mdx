@@ -1,0 +1,111 @@
+---
+titulo: "Um RAG que sabe dizer: não está nas minhas notas"
+descricao: "Busca vetorial nunca volta vazia. Como um corte de distância e uma segunda defesa no prompt fizeram meu RAG recusar em 0,2 s."
+data: 2026-09-21
+pilar: ia-llms
+tags: [rag, pgvector, avaliacao, llm-local]
+draft: true
+origem:
+  - copiloto: "docs/fase03.md"
+---
+
+{/* RASCUNHO gerado a partir do docs/fase03.md do Copiloto. Revisar o tom, a abertura e a seção "O que eu faria diferente" antes de tirar o draft. */}
+
+Perguntei ao meu assistente "quais são as figuras de linguagem?". Ele trouxe três trechos sobre lógica difusa e UML. Nenhum falava de figuras de linguagem, mas os três chegaram com a mesma cara de resposta das perguntas certas.
+
+Se esses trechos fossem direto para o modelo, eu receberia um parágrafo confiante sobre um assunto que eu nunca estudei.
+
+Este post mostra como o [Copiloto](https://github.com/pablomigueldias/copiloto), meu assistente local, aprendeu a dizer "não tenho isso indexado". E por que isso ficou 60 vezes mais barato do que responder.
+
+## O problema: busca vetorial nunca volta vazia
+
+Um RAG busca os trechos mais parecidos com a pergunta e entrega ao modelo. A busca vetorial sempre tem um vizinho mais próximo, então **ela nunca devolve vazio**. Mesmo quando o assunto não existe no índice, algum trecho fica em primeiro lugar.
+
+O Copiloto usa busca híbrida: vetorial e full-text, fundidas por Reciprocal Rank Fusion (RRF). Minha primeira ideia foi usar o score do RRF como medida de confiança. Não funciona. O score do RRF depende só da **posição** de cada trecho nas listas:
+
+$$
+\text{RRF}(d) = \sum_{r \in R} \frac{1}{k + r(d)}
+$$
+
+O primeiro colocado tem o mesmo score com ou sem resposta de verdade. Nos meus testes, "tem resposta" e "não tem" empataram em 0,0164.
+
+## O que separa: a distância de cosseno
+
+A distância de cosseno entre a pergunta e o melhor trecho separa os dois grupos. Medi contra o índice real, com 1.773 trechos:
+
+| Pergunta                                  | Melhor distância | Tem resposta? |
+| ----------------------------------------- | ---------------: | ------------- |
+| normalização de banco de dados            |            0,269 | sim           |
+| o que é uma chave estrangeira             |            0,405 | sim           |
+| o que é overfitting                       |            0,420 | sim           |
+| como funciona a busca híbrida do copiloto |            0,483 | sim           |
+| figuras de linguagem                      |            0,480 | **não**       |
+| regras do xadrez para o roque             |            0,553 | **não**       |
+| receita de bolo de cenoura                |            0,580 | **não**       |
+| qual a capital da Mongólia                |            0,745 | **não**       |
+
+As duas faixas **se tocam** perto de 0,48. Nenhum número separa os dois grupos sem errar.
+
+Escolhi o corte em **0,55**, de propósito conservador. Ele recusa o que está claramente fora e deixa a zona cinzenta para uma segunda defesa.
+
+<Callout tipo="cuidado" titulo="Um corte agressivo é pior que um frouxo">
+  Recusar uma pergunta que tinha resposta ensina a não usar o sistema. Responder
+  com ressalva, não.
+</Callout>
+
+## Duas defesas, uma barata e uma esperta
+
+<Mermaid titulo="Fluxo: a pergunta passa pela busca; se a melhor distância passar de 0,55 sem acerto lexical, o sistema recusa sem chamar o LLM; senão, o LLM responde com citações ou recusa">
+  {`
+flowchart TD
+  P[Pergunta] --> B[Busca híbrida: vetorial + full-text]
+  B --> C{Distância > 0,55 e nenhum acerto lexical?}
+  C -- sim --> N[Não indexado, sem chamar o LLM]
+  C -- não --> L[LLM com trechos numerados]
+  L --> V{Citações válidas?}
+  V -- sim --> R[Resposta com fontes]
+  V -- não sabe --> N2[Não indexado]
+`}
+</Mermaid>
+
+**1. O código, antes do LLM.** Se a melhor distância passa de 0,55 e nenhuma palavra da pergunta aparece literalmente num trecho, a resposta é "não tenho isso indexado". Nenhum token é gasto.
+
+**2. O prompt, depois da busca.** Na zona cinzenta, o modelo recebe os trechos e a ordem explícita de admitir quando eles não respondem. Toda afirmação precisa de uma citação `[n]`, e um validador rejeita citação para um trecho que não existe.
+
+Em forma simplificada:
+
+```python title="pergunta.py" {4-5}
+def perguntar(pergunta: str) -> Resposta:
+    trechos = buscar(pergunta, limite=5)
+
+    if trechos[0].distancia > 0.55 and not acerto_lexical(pergunta, trechos):
+        return Resposta.nao_indexado()  # 0,2 s, zero token
+
+    texto = llm.gerar(prompt_ancorado(pergunta, trechos))
+    validar_citacoes(texto, trechos)  # todo [n] precisa existir
+    return Resposta(texto, trechos)
+```
+
+O "acerto lexical" foi um desvio do plano original. Se a pergunta tem uma palavra exata de uma nota, como `pgvector` ou um nome próprio, o índice tem o assunto, mesmo que o embedding discorde. Recusar nesse caso seria o pior tipo de erro.
+
+## O resultado: 12 de 12
+
+Avaliei com 12 perguntas fixas: 8 com resposta no índice e 4 sem. Modelo local `gemma4:e4b`, na minha GPU de 6 GB.
+
+|                          |   Distância |     Tempo | Resultado                                  |
+| ------------------------ | ----------: | --------: | ------------------------------------------ |
+| 8 perguntas com resposta | 0,30 a 0,45 | 12 a 20 s | todas responderam, citando de 1 a 5 fontes |
+| 4 perguntas sem resposta | 0,57 a 0,69 | **0,2 s** | todas recusaram                            |
+
+Duas perguntas mostraram por que a segunda defesa existe. "Quais são as figuras de linguagem?" mediu 0,475 e **passou** pelo corte, como planejado. O modelo recebeu lógica difusa como contexto e respondeu que não sabia. "O que é uma metáfora?" mediu 0,497, recebeu um trecho sobre função do 2º grau e também recusou.
+
+**Recusar custa 0,2 s. Responder custa de 12 a 20 s.** O corte não melhora só a qualidade: ele evita que a GPU passe 15 segundos elaborando uma resposta errada.
+
+## O que eu faria diferente
+
+{/* Pablo: revisar. Os dois pontos abaixo saíram dos "desvios em relação ao plano" do docs/fase03.md. */}
+
+- **Planejar o salvo-conduto lexical desde o início.** Ele só apareceu quando uma pergunta com resposta foi recusada.
+- **Mostrar todos os trechos que a busca trouxe, não só os citados.** Sem ver o que chegou ao modelo, não dá para desconfiar da resposta. É a diferença entre "confie em mim" e "confira".
+
+<CTA assunto="RAG que recusa quando não sabe" />
