@@ -33,7 +33,10 @@ keywords = ["-"]
 [[rules]]
 id = "caminho-local"
 description = "Caminho da minha máquina (expõe usuário e estrutura de pastas)"
-regex = '''(?:/home/[a-z_][a-z0-9_-]*/|/mnt/dados/|[A-Za-z]:\\Users\\)'''
+# O grupo 1 é o "segredo" reportado: só o nome do usuário ou da pasta. A lista
+# global do gitleaks (>= 8.2x) libera o caminho inteiro "/home/x/" como falso positivo.
+regex = '''(?:/home/|/mnt/|[A-Za-z]:\\Users\\)([A-Za-z_][A-Za-z0-9_-]*)[/\\]'''
+secretGroup = 1
 keywords = ["/home/", "/mnt/", "\\users\\"]
 
 [[rules]]
