@@ -1,27 +1,29 @@
-// Prova de conceito (3.1). A lista de slugs vem do índice gerado no 3.3.
-const slugs = ["exemplo-recursos"];
-
-type Frontmatter = { titulo: string; descricao: string };
+import { notFound } from "next/navigation";
+import { getAllPosts, getPost } from "@/content/posts";
 
 export default async function Post({ params }: PageProps<"/blog/[slug]">) {
   const { slug } = await params;
-  const { default: Conteudo, frontmatter } = (await import(
-    `@content/blog/${slug}.mdx`
-  )) as {
+  const post = getPost(slug);
+  if (!post) notFound();
+
+  const { default: Conteudo } = (await import(`@content/blog/${slug}.mdx`)) as {
     default: React.ComponentType;
-    frontmatter: Frontmatter;
   };
 
   return (
     <article className="mx-auto max-w-2xl px-4 py-16">
-      <p data-teste="frontmatter">{frontmatter.descricao}</p>
+      {post.draft && <p>[rascunho]</p>}
+      <p>
+        <time dateTime={post.data}>{post.data}</time> · {post.minutosDeLeitura}{" "}
+        min de leitura
+      </p>
       <Conteudo />
     </article>
   );
 }
 
 export function generateStaticParams() {
-  return slugs.map((slug) => ({ slug }));
+  return getAllPosts().map((p) => ({ slug: p.slug }));
 }
 
 export const dynamicParams = false;

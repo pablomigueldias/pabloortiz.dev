@@ -43,4 +43,7 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run format:check
+      # Com rascunhos: o CI testa a renderização de todo post, inclusive os drafts.
       - run: npm run build
+        env:
+          INCLUIR_RASCUNHOS: "1"
