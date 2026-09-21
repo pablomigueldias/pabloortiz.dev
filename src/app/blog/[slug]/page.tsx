@@ -1,3 +1,4 @@
+import "katex/dist/katex.min.css";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPost } from "@/content/posts";
 
