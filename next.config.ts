@@ -58,8 +58,12 @@ const withMDX = createMDX({
       "remark-frontmatter",
       ["remark-mdx-frontmatter", { name: "frontmatter" }],
       "remark-gfm",
+      "remark-math",
     ],
     rehypePlugins: [
+      // Matemática renderizada no build. O rehype-katex não lança erro (desenha a fórmula
+      // em vermelho com .katex-error); quem quebra o build é o scripts/verificar-build.ts.
+      ["rehype-katex", { strict: true }],
       // Highlight no build (zero JS no cliente). Temas por nome: opção serializável.
       [
         "rehype-pretty-code",
