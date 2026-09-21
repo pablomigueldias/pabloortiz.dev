@@ -12,7 +12,7 @@ type Props = {
 
 export function Figure({ src, alt, largura, altura, legenda }: Props) {
   return (
-    <figure className="my-6">
+    <figure className="my-8">
       <Image
         src={src}
         alt={alt}
@@ -20,7 +20,11 @@ export function Figure({ src, alt, largura, altura, legenda }: Props) {
         height={altura}
         className="h-auto w-full"
       />
-      {legenda && <figcaption className="mt-2 text-sm">{legenda}</figcaption>}
+      {legenda && (
+        <figcaption className="mt-2 text-center text-sm italic">
+          {legenda}
+        </figcaption>
+      )}
     </figure>
   );
 }

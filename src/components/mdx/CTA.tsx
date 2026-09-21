@@ -13,8 +13,8 @@ export function CTA({
   texto = "Precisa disso no seu time ou projeto?",
 }: Props) {
   return (
-    <aside className="my-8 border px-4 py-4">
-      <p>{texto}</p>
+    <aside className="not-prose border-primary/30 bg-primary/5 my-10 flex flex-col gap-4 rounded-xl border p-6 sm:flex-row sm:items-center sm:justify-between">
+      <p className="text-foreground font-semibold">{texto}</p>
       <a
         href={linkWhatsApp(`Olá, Pablo! Vi seu post sobre ${assunto}.`)}
         rel="noopener noreferrer"
