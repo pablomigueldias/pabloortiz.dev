@@ -1,0 +1,43 @@
+# Regras padrão do gitleaks + regras de privacidade deste repo.
+# Este arquivo é público: ele descreve padrões, nunca contém o dado que bloqueia.
+
+title = "pabloortiz.dev"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "telefone-celular-br"
+description = "Celular brasileiro. Só o número comercial pode ser publicado"
+regex = '''(?:\+?55[\s.-]?)?\(?\b[1-9]{2}\)?[\s.-]?9\d{4}[\s.-]?\d{4}\b'''
+keywords = ["9"]
+[rules.allowlist]
+regexes = [
+  '''9\D?2584\D?8819''',  # comercial (público por decisão)
+  '''9\D?0000\D?0000''',  # fictício, para teste
+]
+paths = ['''package-lock\.json''']
+
+[[rules]]
+id = "email-webmail-pessoal"
+description = "E-mail pessoal de webmail. O público é contato@pabloortiz.dev"
+regex = '''[A-Za-z0-9._%+-]+@(?:gmail|googlemail|hotmail|outlook|live|yahoo|icloud|bol|uol)\.com(?:\.br)?'''
+keywords = ["@"]
+
+[[rules]]
+id = "cpf"
+description = "CPF formatado"
+regex = '''\b\d{3}\.\d{3}\.\d{3}-\d{2}\b'''
+keywords = ["-"]
+
+[[rules]]
+id = "caminho-local"
+description = "Caminho da minha máquina (expõe usuário e estrutura de pastas)"
+regex = '''(?:/home/[a-z_][a-z0-9_-]*/|/mnt/dados/|[A-Za-z]:\\Users\\)'''
+keywords = ["/home/", "/mnt/", "\\users\\"]
+
+[[rules]]
+id = "url-banco-com-senha"
+description = "URL de banco com usuário e senha embutidos"
+regex = '''(?:postgres(?:ql)?|mysql|mongodb(?:\+srv)?|redis)(?:\+\w+)?://[^:\s/@]+:[^@\s]+@'''
+keywords = ["://"]
