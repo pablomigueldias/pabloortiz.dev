@@ -9,6 +9,17 @@ updates:
         patterns: ["*"]
         update-types: [minor, patch]
     open-pull-requests-limit: 5
+    # Versões maiores destes pacotes só entram à mão, quando o Next suportar:
+    # - eslint 10 quebra o plugin de React do eslint-config-next 16
+    # - typescript 7 ainda não é suportado pelo typescript-eslint
+    # - @types/node acompanha o Node do runtime (24), não o mais novo
+    ignore:
+      - dependency-name: eslint
+        update-types: ["version-update:semver-major"]
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
