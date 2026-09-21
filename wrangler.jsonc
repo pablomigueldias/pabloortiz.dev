@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // O nome precisa ser igual ao do projeto na Cloudflare (Workers & Pages).
+  "name": "pabloortiz-dev",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-09-21",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS",
+  },
+  "services": [
+    {
+      // Auto-referência usada pelo cache do OpenNext: o "service" tem que ser o próprio "name".
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "pabloortiz-dev",
+    },
+  ],
+  "images": {
+    // Otimização do next/image (componente Figure) pelo Cloudflare Images.
+    "binding": "IMAGES",
+  },
+  "observability": {
+    "enabled": true,
+  },
+}
