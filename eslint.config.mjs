@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Gerados pelo build da Cloudflare (centenas de MB: o lint estoura a memória).
+    ".open-next/**",
+    ".wrangler/**",
   ]),
 ]);
 
