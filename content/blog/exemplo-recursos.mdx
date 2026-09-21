@@ -20,3 +20,16 @@ Este post existe para testar o pipeline. Ele **nunca** vai para produção.
 - [ ] outro item
 
 ~~riscado~~ e https://exemplo.com vira link.
+
+## Código
+
+Com nome de arquivo e linhas destacadas:
+
+```python title="busca.py" {3-4}
+def buscar(consulta: str, limite: int = 5) -> list[str]:
+    vetorial = busca_vetorial(consulta, limite)
+    lexical = busca_full_text(consulta, limite)
+    return fundir_rrf(vetorial, lexical)[:limite]
+```
+
+Código inline: `SELECT 1;`
