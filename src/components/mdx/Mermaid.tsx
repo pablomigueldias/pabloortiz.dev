@@ -18,7 +18,7 @@ export function Mermaid({ titulo, children }: Props) {
 
   useEffect(() => {
     let cancelado = false;
-    const escuro = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const escuro = document.documentElement.classList.contains("dark");
 
     import("mermaid")
       .then(async ({ default: mermaid }) => {
