@@ -1,3 +1,4 @@
+import path from "node:path";
 import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
 
@@ -61,6 +62,14 @@ const withMDX = createMDX({
       "remark-math",
     ],
     rehypePlugins: [
+      // id nos headings (a TOC da Etapa 6 usa) e o próprio heading vira link para a âncora.
+      // Plugin local: id sem acento (ver o arquivo). Caminho absoluto, calculado no
+      // build: o relativo é resolvido a partir de uma pasta interna do Turbopack.
+      path.resolve("src/mdx/rehype-slug-ascii.mjs"),
+      [
+        "rehype-autolink-headings",
+        { behavior: "wrap", properties: { className: ["ancora"] } },
+      ],
       // Matemática renderizada no build. O rehype-katex não lança erro (desenha a fórmula
       // em vermelho com .katex-error); quem quebra o build é o scripts/verificar-build.ts.
       ["rehype-katex", { strict: true }],
