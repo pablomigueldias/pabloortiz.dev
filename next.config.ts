@@ -59,7 +59,16 @@ const withMDX = createMDX({
       ["remark-mdx-frontmatter", { name: "frontmatter" }],
       "remark-gfm",
     ],
-    rehypePlugins: [],
+    rehypePlugins: [
+      // Highlight no build (zero JS no cliente). Temas por nome: opção serializável.
+      [
+        "rehype-pretty-code",
+        {
+          theme: { light: "github-light", dark: "github-dark" },
+          keepBackground: false,
+        },
+      ],
+    ],
   },
 });
 
