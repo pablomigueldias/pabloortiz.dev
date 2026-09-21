@@ -1,3 +1,4 @@
+import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV === "development";
@@ -49,4 +50,17 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// Plugins pelo nome (string): o Turbopack não aceita função como opção.
+// O MDX vira módulo no build, sem eval em tempo de execução (Workers bloqueiam eval).
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: [
+      "remark-frontmatter",
+      ["remark-mdx-frontmatter", { name: "frontmatter" }],
+      "remark-gfm",
+    ],
+    rehypePlugins: [],
+  },
+});
+
+export default withMDX(nextConfig);
