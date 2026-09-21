@@ -43,3 +43,16 @@ Em bloco, a fusão por Reciprocal Rank Fusion:
 $$
 \text{RRF}(d) = \sum_{r \in R} \frac{1}{k + r(d)}
 $$
+
+## Diagrama
+
+<Mermaid titulo="Fluxo da busca híbrida: a consulta vai para a busca vetorial e a full-text, e as duas são fundidas por RRF">
+  {`
+flowchart LR
+  Q[Consulta] --> V[Busca vetorial]
+  Q --> L[Busca full-text]
+  V --> F[Fusão RRF]
+  L --> F
+  F --> R[Resposta com fonte]
+`}
+</Mermaid>
