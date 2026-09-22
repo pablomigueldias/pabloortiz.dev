@@ -16,6 +16,15 @@
       "service": "pabloortiz-dev",
     },
   ],
+  // Rate limit do formulário de contato (src/app/api/contato/route.ts): por IP.
+  // namespace_id é um número escolhido aqui, único na conta.
+  "ratelimits": [
+    {
+      "name": "LIMITE_CONTATO",
+      "namespace_id": "1001",
+      "simple": { "limit": 3, "period": 60 },
+    },
+  ],
   "images": {
     // Otimização do next/image (componente Figure) pelo Cloudflare Images.
     "binding": "IMAGES",
