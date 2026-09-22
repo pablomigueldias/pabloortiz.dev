@@ -9,6 +9,7 @@ import {
   SLUG,
   type PostIndexado,
 } from "../src/content/schema.ts";
+import { criarVerificador } from "./privacidade.ts";
 
 const RAIZ = path.resolve(import.meta.dirname, "..");
 const DIR_BLOG = path.join(RAIZ, "content", "blog");
@@ -16,6 +17,8 @@ const SAIDA = path.join(RAIZ, "src", "content", "index.generated.ts");
 const PALAVRAS_POR_MINUTO = 200;
 
 z.config(z.locales.ptBR());
+
+const verificarPrivacidade = criarVerificador(RAIZ);
 
 function valorEm(obj: unknown, caminho: PropertyKey[]): unknown {
   return caminho.reduce<unknown>(
@@ -56,15 +59,18 @@ for (const arquivo of arquivos) {
     continue;
   }
 
-  const partes = separarFrontmatter(
-    await readFile(path.join(DIR_BLOG, arquivo), "utf8"),
-  );
+  const fonte = await readFile(path.join(DIR_BLOG, arquivo), "utf8");
+  const partes = separarFrontmatter(fonte);
   if (!partes) {
     erros.push(`${rel}: falta o frontmatter (bloco --- no início do arquivo)`);
     continue;
   }
 
   const bruto: unknown = parse(partes.yaml) ?? {};
+
+  const problemas = verificarPrivacidade(fonte, bruto);
+  for (const p of problemas) erros.push(`${rel}: privacidade: ${p}`);
+  if (problemas.length > 0) continue;
   const resultado = frontmatterSchema.safeParse(bruto);
   if (!resultado.success) {
     for (const issue of resultado.error.issues) {
