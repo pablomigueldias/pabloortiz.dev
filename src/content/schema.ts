@@ -70,3 +70,32 @@ export type PostIndexado = Frontmatter & {
   slug: string;
   minutosDeLeitura: number;
 };
+
+// ---------- Projetos (cases) ----------
+
+export const projetoSchema = z
+  .object({
+    titulo: z.string().min(3).max(70),
+    resumo: z.string().min(50).max(200),
+    pilar: z.enum(PILARES),
+    stack: z.array(z.string().min(1)).min(1).max(15),
+    repo: z.url({ protocol: /^https$/, hostname: /^github\.com$/ }),
+    destaque: z.boolean().default(false),
+    // Números que provam o resultado. Só o que dá para mostrar (regra de honestidade).
+    metricas: z
+      .array(
+        z.object({
+          valor: z.string().min(1).max(12),
+          rotulo: z.string().min(3).max(60),
+        }),
+      )
+      .max(6)
+      .default([]),
+    data: z.string().regex(DATA, "use AAAA-MM-DD"),
+    draft: z.boolean().default(false),
+  })
+  .strict();
+
+export type Projeto = z.infer<typeof projetoSchema>;
+
+export type ProjetoIndexado = Projeto & { slug: string };

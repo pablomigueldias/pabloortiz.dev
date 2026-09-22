@@ -1,0 +1,68 @@
+---
+titulo: "Copiloto"
+resumo: "Assistente pessoal local-first: responde sobre o que eu estudo citando a fonte, transcreve aulas na GPU e só age com aprovação humana."
+pilar: ia-llms
+stack:
+  [
+    Python,
+    FastAPI,
+    SQLAlchemy 2.0,
+    PostgreSQL,
+    pgvector,
+    Alembic,
+    Ollama,
+    Gemini,
+    faster-whisper,
+    Redis,
+    Next.js,
+    pytest,
+    Playwright,
+  ]
+repo: "https://github.com/pablomigueldias/copiloto"
+destaque: true
+metricas:
+  - valor: "685"
+    rotulo: "testes automatizados"
+  - valor: "12/12"
+    rotulo: "na avaliação de resposta ancorada"
+  - valor: "0,2 s"
+    rotulo: "para recusar o que não está indexado"
+  - valor: "6 GB"
+    rotulo: "de VRAM para três modelos locais"
+data: 2026-09-21
+---
+
+## O problema
+
+Eu estudo todos os dias e anoto tudo: notas no Obsidian, PDFs, código. Com centenas de documentos, achar o que eu já tinha estudado virou busca manual. Os chats de IA respondiam com confiança sobre qualquer coisa, inclusive sobre o que não estava nas minhas notas.
+
+Eu queria o contrário: um assistente que responde **só** com o que eu tenho, diz de onde tirou e admite quando não sabe.
+
+## O que eu construí
+
+Um sistema de produção de uma pessoa só, rodando todo dia na minha máquina:
+
+- **Responde sobre o que eu estudei, citando a fonte.** Indexa notas, PDFs página a página e READMEs de repositório: 3.064 trechos de 871 documentos.
+- **Transcreve aula e reunião ao vivo.** O texto aparece a cada 20 segundos e sai como nota de estudo organizada no vault, na pasta certa.
+- **Age com aprovação humana.** Tarefas como a candidatura a uma vaga (vaga, match, currículo) passam por uma fila onde eu aprovo antes de qualquer coisa sair.
+
+## Decisões que importam
+
+**Busca híbrida.** A busca vetorial não acha "pgvector" escrito exatamente assim; a busca por palavra não acha "armazenamento de vetores". O Copiloto usa as duas, fundidas por Reciprocal Rank Fusion, num índice HNSW do pgvector.
+
+**Recusar em vez de alucinar.** Se o trecho mais próximo está longe demais da pergunta, a resposta é "não está nas minhas notas", sem chamar o modelo. Numa avaliação com 12 perguntas fixas (8 com resposta no índice e 4 sem), o acerto foi 12/12.
+
+**O LLM fora do controle de fluxo.** Os pipelines são máquinas de estado no Postgres. O modelo entra em pontos isolados e nunca decide o próximo passo.
+
+**Local primeiro, nuvem por medida.** Três modelos convivem em 6 GB de VRAM, com um gateway que roteia por tarefa, tenta de novo quando o JSON vem inválido e cai para o modelo local quando a API falha. A API externa só entra onde eu medi que o local falhava.
+
+**Tudo observado.** Cada chamada de LLM fica registrada, com provedor, latência, tokens e erro: 726 chamadas até agora.
+
+## Qualidade
+
+685 testes: 666 de unidade e integração, contra um Postgres real, e 19 de navegador com Playwright. Um passo = um commit, com a suíte verde em cada um.
+
+<CTA
+  assunto="o Copiloto"
+  texto="Quer algo assim para os documentos da sua empresa?"
+/>
