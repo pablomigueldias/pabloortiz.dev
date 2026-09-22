@@ -64,11 +64,19 @@ Imagens ficam em `public/blog/<slug>/`, com as dimensões reais e sem metadados 
 
 ## Segurança e privacidade
 
-O repositório é público. Três barreiras impedem que segredo ou dado pessoal entre:
+O repositório é público. As barreiras abaixo impedem que segredo ou dado pessoal entre, e todas rodam de novo no CI (pular o hook com `--no-verify` não adianta). A `main` só aceita merge com o CI verde.
 
-1. `.gitignore` bloqueia `.env*`, chaves e dumps.
-2. Pre-commit roda o [gitleaks](https://github.com/gitleaks/gitleaks) com as regras de [`.gitleaks.toml`](./.gitleaks.toml): as padrão, mais telefone, e-mail pessoal, CPF, caminho local e URL de banco com senha.
-3. O CI roda o gitleaks de novo, no histórico inteiro. A `main` só aceita merge com o CI verde.
+| Barreira                                                                                | O que barra                                                                                                                       | Onde                                |
+| --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| `.gitignore`                                                                            | `.env*`, chaves, dumps, `privacidade.denylist.txt`                                                                                | sempre                              |
+| [gitleaks](https://github.com/gitleaks/gitleaks) + [`.gitleaks.toml`](./.gitleaks.toml) | segredos, celular (menos o comercial), e-mail pessoal, CPF, caminho local, URL de banco com senha, IP de rede interna             | pre-commit e CI (histórico inteiro) |
+| Linter de privacidade ([`scripts/privacidade.ts`](./scripts/privacidade.ts))            | nos posts: IP interno, resto de Obsidian (`[[wikilink]]`, marca de tempo), `origem` em pasta pessoal do vault, termos da denylist | dev, build e CI                     |
+| [`scripts/verificar-imagens.ts`](./scripts/verificar-imagens.ts)                        | EXIF (GPS, aparelho), XMP, IPTC e comentários em JPEG, PNG, WebP e SVG                                                            | pre-commit e CI                     |
+| Headers                                                                                 | CSP bloqueante (só recursos do próprio site), HSTS, `X-Frame-Options: DENY`, `nosniff`                                            | site no ar                          |
+
+Imagem nova? Rode `npm run limpar-imagens` antes do commit: tira os metadados e reduz para no máximo 2000 px.
+
+A denylist (termos pessoais que nunca podem aparecer) fica em `privacidade.denylist.txt`, fora do git, e no secret `PRIVACIDADE_DENYLIST` do GitHub. As mensagens de erro nunca mostram o termo.
 
 O site só é indexado com `SITE_ENV=production`. Preview e build local saem com `noindex`.
 

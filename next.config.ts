@@ -8,7 +8,7 @@ const isDev = process.env.NODE_ENV === "development";
 // *.workers.dev, build local), tudo sai com noindex.
 const isProduction = process.env.SITE_ENV === "production";
 
-// Report-only até a Etapa 4, quando Mermaid, KaTeX e analytics estiverem no lugar.
+// Bloqueante desde a Etapa 4 (testado com Mermaid, KaTeX, Shiki, tema e next/image).
 // Sem nonce: o site é estático, e nonce obrigaria renderizar cada página no servidor.
 const csp = [
   "default-src 'self'",
@@ -25,7 +25,7 @@ const csp = [
 ].join("; ");
 
 const securityHeaders = [
-  { key: "Content-Security-Policy-Report-Only", value: csp },
+  { key: "Content-Security-Policy", value: csp },
   {
     key: "Strict-Transport-Security",
     value: "max-age=63072000; includeSubDomains; preload",
