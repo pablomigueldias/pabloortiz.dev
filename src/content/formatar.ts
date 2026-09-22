@@ -12,3 +12,10 @@ export function dataPorExtenso(data: string): string {
     timeZone: "UTC",
   }).format(new Date(`${data}T00:00:00Z`));
 }
+
+export const DESCRICAO_PILAR: Record<Frontmatter["pilar"], string> = {
+  "ia-llms":
+    "RAG, LLMs locais e por API, agentes e avaliação: sistemas de IA que rodam todo dia, com o que eu medi.",
+  "dados-ml":
+    "Pipelines de dados, SQL, análise e machine learning, do dado bruto ao modelo em uso.",
+};

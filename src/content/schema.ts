@@ -66,9 +66,14 @@ export const frontmatterSchema = z
 
 export type Frontmatter = z.infer<typeof frontmatterSchema>;
 
+export type ItemSumario = { nivel: 2 | 3; texto: string; id: string };
+
 export type PostIndexado = Frontmatter & {
   slug: string;
   minutosDeLeitura: number;
+  sumario: ItemSumario[];
+  // O post já tem um <CTA> no corpo. Sem ele, a página põe um no fim.
+  temCTA: boolean;
 };
 
 // ---------- Projetos (cases) ----------

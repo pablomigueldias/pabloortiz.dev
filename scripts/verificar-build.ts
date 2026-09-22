@@ -1,7 +1,9 @@
 // Roda depois do `next build` e falha se o HTML gerado tiver algum problema
 // que o próprio build deixa passar em silêncio.
+import { existsSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
+import { postsIndexados } from "../src/content/index.generated.ts";
 
 const DIR_HTML = path.resolve(
   import.meta.dirname,
@@ -36,6 +38,20 @@ for await (const arquivo of arquivosHtml(DIR_HTML)) {
   for (const { nome, padrao } of CHECAGENS) {
     if (padrao.test(html))
       problemas.push(`${path.relative(DIR_HTML, arquivo)}: ${nome}`);
+  }
+}
+
+// O sumário é calculado do MDX (scripts/gerar-indice-conteudo.ts) e os ids vêm do
+// plugin rehype. Se os dois divergirem, o link do sumário não leva a lugar nenhum.
+for (const post of postsIndexados) {
+  const arquivo = path.join(DIR_HTML, "blog", `${post.slug}.html`);
+  if (!existsSync(arquivo)) continue; // rascunho fora deste build
+  const html = await readFile(arquivo, "utf8");
+  for (const item of post.sumario) {
+    if (!html.includes(`id="${item.id}"`))
+      problemas.push(
+        `blog/${post.slug}.html: o sumário aponta para #${item.id} ("${item.texto}"), que não existe na página`,
+      );
   }
 }
 

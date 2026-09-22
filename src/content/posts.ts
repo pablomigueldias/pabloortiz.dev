@@ -28,3 +28,39 @@ export function getAllPosts(): PostIndexado[] {
 export function getPost(slug: string): PostIndexado | undefined {
   return getAllPosts().find((p) => p.slug === slug);
 }
+
+export function getPostsDoPilar(pilar: PostIndexado["pilar"]): PostIndexado[] {
+  return getAllPosts().filter((p) => p.pilar === pilar);
+}
+
+// Até `limite` posts parecidos: cada tag em comum vale 2, o mesmo pilar vale 1.
+// Empate fica com o mais recente (a lista já vem ordenada por data).
+export function getRelacionados(
+  post: PostIndexado,
+  limite = 3,
+): PostIndexado[] {
+  return getAllPosts()
+    .filter((p) => p.slug !== post.slug)
+    .map((p) => ({
+      p,
+      pontos:
+        2 * p.tags.filter((t) => post.tags.includes(t)).length +
+        (p.pilar === post.pilar ? 1 : 0),
+    }))
+    .filter(({ pontos }) => pontos > 0)
+    .sort((a, b) => b.pontos - a.pontos)
+    .slice(0, limite)
+    .map(({ p }) => p);
+}
+
+// Posts agrupados por ano, do mais recente para o mais antigo.
+export function agruparPorAno(
+  posts: PostIndexado[],
+): [ano: string, posts: PostIndexado[]][] {
+  const grupos = new Map<string, PostIndexado[]>();
+  for (const p of posts) {
+    const ano = p.data.slice(0, 4);
+    grupos.set(ano, [...(grupos.get(ano) ?? []), p]);
+  }
+  return [...grupos];
+}
