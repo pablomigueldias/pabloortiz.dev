@@ -1,6 +1,9 @@
-# Barreira local contra segredo e dado pessoal. O CI roda a mesma varredura:
-# pular o hook com --no-verify não adianta.
+# Barreira local contra segredo, dado pessoal e metadado de imagem. O CI roda as
+# mesmas varreduras: pular o hook com --no-verify não adianta.
 pre-commit:
   commands:
     gitleaks:
       run: gitleaks protect --staged --redact --no-banner --config .gitleaks.toml
+    imagens:
+      glob: "*.{jpg,jpeg,png,webp,svg,JPG,JPEG,PNG,WEBP}"
+      run: node scripts/verificar-imagens.ts {staged_files}
