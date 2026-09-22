@@ -22,10 +22,10 @@ export default function Privacidade() {
 
       <div className="post prose prose-lg dark:prose-invert mt-10 max-w-none">
         <p>
-          Resumo: este site <strong>não usa cookies</strong>,{" "}
-          <strong>não tem analytics</strong> e{" "}
-          <strong>não coleta dados pessoais</strong>. Esta página segue a Lei
-          Geral de Proteção de Dados (LGPD, Lei nº 13.709/2018).
+          Resumo: este site <strong>não usa cookies</strong> e{" "}
+          <strong>não identifica você</strong>. Ele só conta visitas de forma
+          agregada, sem saber quem é quem. Esta página segue a Lei Geral de
+          Proteção de Dados (LGPD, Lei nº 13.709/2018).
         </p>
 
         <h2>O que fica no seu navegador</h2>
@@ -33,6 +33,19 @@ export default function Privacidade() {
           Só a sua escolha de tema (claro ou escuro), no{" "}
           <code>localStorage</code>, com a chave <code>tema</code>. Ela nunca
           sai do seu navegador e você pode apagá-la limpando os dados do site.
+        </p>
+
+        <h2>Estatísticas de visita</h2>
+        <p>
+          Uso o{" "}
+          <a href="https://www.cloudflare.com/pt-br/web-analytics/">
+            Cloudflare Web Analytics
+          </a>{" "}
+          para saber quais páginas são lidas. Ele não usa cookies, não guarda
+          nada no seu navegador e não cria um identificador seu. Eu vejo só
+          totais: páginas visitadas, de onde as visitas vieram (o site que
+          trouxe o link), país, navegador e o tempo de carregamento das páginas.
+          Não vejo seu endereço IP nem consigo separar uma pessoa da outra.
         </p>
 
         <h2>Hospedagem</h2>
