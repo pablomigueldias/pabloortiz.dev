@@ -4,12 +4,11 @@ descricao: "Busca vetorial nunca volta vazia. Como um corte de distância e uma 
 data: 2026-09-21
 pilar: ia-llms
 tags: [rag, pgvector, avaliacao, llm-local]
-draft: true
+draft: false
+lang: pt-BR
 origem:
   - copiloto: "docs/fase03.md"
 ---
-
-{/* RASCUNHO gerado a partir do docs/fase03.md do Copiloto. Revisar o tom, a abertura e a seção "O que eu faria diferente" antes de tirar o draft. */}
 
 Perguntei ao meu assistente "quais são as figuras de linguagem?". Ele trouxe três trechos sobre lógica difusa e UML. Nenhum falava de figuras de linguagem, mas os três chegaram com a mesma cara de resposta das perguntas certas.
 
@@ -102,8 +101,6 @@ Duas perguntas mostraram por que a segunda defesa existe. "Quais são as figuras
 **Recusar custa 0,2 s. Responder custa de 12 a 20 s.** O corte não melhora só a qualidade: ele evita que a GPU passe 15 segundos elaborando uma resposta errada.
 
 ## O que eu faria diferente
-
-{/* Pablo: revisar. Os dois pontos abaixo saíram dos "desvios em relação ao plano" do docs/fase03.md. */}
 
 - **Planejar o salvo-conduto lexical desde o início.** Ele só apareceu quando uma pergunta com resposta foi recusada.
 - **Mostrar todos os trechos que a busca trouxe, não só os citados.** Sem ver o que chegou ao modelo, não dá para desconfiar da resposta. É a diferença entre "confie em mim" e "confira".
