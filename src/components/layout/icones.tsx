@@ -31,6 +31,23 @@ export const IconeProjetos = (p: P) => (
     <path d="m8 9-4 3 4 3M16 9l4 3-4 3M13.5 5l-3 14" />
   </svg>
 );
+export const IconeServicos = (p: P) => (
+  <svg {...base} {...p}>
+    <rect x="3" y="7" width="18" height="13" rx="2" />
+    <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18" />
+  </svg>
+);
+export const IconeSobre = (p: P) => (
+  <svg {...base} {...p}>
+    <circle cx="12" cy="8" r="4" />
+    <path d="M4 21a8 8 0 0 1 16 0" />
+  </svg>
+);
+export const IconeContato = (p: P) => (
+  <svg {...base} {...p}>
+    <path d="M21 12a8 8 0 0 1-11.8 7L3 21l2-6.2A8 8 0 1 1 21 12z" />
+  </svg>
+);
 export const IconeSol = (p: P) => (
   <svg {...base} {...p}>
     <circle cx="12" cy="12" r="4" />
