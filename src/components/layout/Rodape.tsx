@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { site } from "@/config/site";
 
 export function Rodape() {
@@ -5,7 +6,13 @@ export function Rodape() {
     <footer className="border-border text-muted-foreground mt-auto border-t py-8 text-sm">
       <div className="mx-auto flex max-w-5xl flex-col gap-2 px-4 sm:flex-row sm:justify-between md:px-8">
         <p>
-          © {new Date().getFullYear()} {site.nome}
+          © {new Date().getFullYear()} {site.nome} ·{" "}
+          <Link
+            href="/privacidade"
+            className="hover:text-primary underline underline-offset-4"
+          >
+            Privacidade
+          </Link>
         </p>
         <p>
           Conteúdo sob{" "}
