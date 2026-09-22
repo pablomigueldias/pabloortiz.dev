@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     // Gerados pelo build da Cloudflare (centenas de MB: o lint estoura a memória).
     ".open-next/**",
     ".wrangler/**",
+    // Índice de busca gerado no build.
+    "public/pagefind/**",
   ]),
 ]);
 

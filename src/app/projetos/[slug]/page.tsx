@@ -27,9 +27,14 @@ export default async function Projeto({
   };
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-12 md:px-8 md:py-16">
+    <article
+      data-pagefind-body
+      data-pagefind-meta="tipo:Projeto"
+      className="mx-auto max-w-3xl px-4 py-12 md:px-8 md:py-16"
+    >
       <Link
         href="/projetos"
+        data-pagefind-ignore
         className="text-muted-foreground hover:text-primary text-sm font-medium tracking-wider uppercase"
       >
         ← Projetos
@@ -47,7 +52,10 @@ export default async function Projeto({
         </p>
 
         {projeto.metricas.length > 0 && (
-          <dl className="border-border mt-8 grid grid-cols-2 gap-6 border-y py-6 sm:grid-cols-4">
+          <dl
+            data-pagefind-ignore
+            className="border-border mt-8 grid grid-cols-2 gap-6 border-y py-6 sm:grid-cols-4"
+          >
             {projeto.metricas.map((m) => (
               <div key={m.rotulo} className="flex flex-col">
                 <dt className="text-muted-foreground text-xs">{m.rotulo}</dt>
@@ -59,7 +67,10 @@ export default async function Projeto({
           </dl>
         )}
 
-        <div className="mt-6 flex flex-wrap items-center gap-2">
+        <div
+          data-pagefind-ignore
+          className="mt-6 flex flex-wrap items-center gap-2"
+        >
           {projeto.stack.map((s) => (
             <span
               key={s}
