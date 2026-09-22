@@ -13,7 +13,7 @@ export function CartaoPost({ post }: { post: PostIndexado }) {
           {ROTULO_PILAR[post.pilar]}
         </span>
         {post.draft && (
-          <span className="text-xs font-bold tracking-wider text-amber-700 uppercase dark:text-amber-400">
+          <span className="text-xs font-bold tracking-wider text-amber-800 uppercase dark:text-amber-400">
             · Rascunho
           </span>
         )}

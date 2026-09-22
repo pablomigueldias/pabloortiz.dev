@@ -125,14 +125,40 @@ export function Sidebar() {
   const botaoRef = useRef<HTMLButtonElement>(null);
   const painelRef = useRef<HTMLDivElement>(null);
 
-  // No celular: Esc fecha, o foco vai para o painel e volta ao botão ao fechar.
+  // No celular: Esc fecha, o foco vai para o painel, o Tab fica preso nele (a página
+  // atrás está coberta) e o foco volta ao botão ao fechar.
   useEffect(() => {
     if (!aberto) return;
     const anterior = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     painelRef.current?.querySelector<HTMLElement>("a, button")?.focus();
-    const aoTeclar = (e: KeyboardEvent) =>
-      e.key === "Escape" && setAberto(false);
+    const aoTeclar = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setAberto(false);
+        return;
+      }
+      if (e.key !== "Tab" || !painelRef.current) return;
+      const focaveis = painelRef.current.querySelectorAll<HTMLElement>(
+        "a[href], button:not([disabled])",
+      );
+      const primeiro = focaveis[0];
+      const ultimo = focaveis[focaveis.length - 1];
+      if (!primeiro || !ultimo) return;
+      const ativo = document.activeElement;
+      if (
+        e.shiftKey &&
+        (ativo === primeiro || !painelRef.current.contains(ativo))
+      ) {
+        e.preventDefault();
+        ultimo.focus();
+      } else if (
+        !e.shiftKey &&
+        (ativo === ultimo || !painelRef.current.contains(ativo))
+      ) {
+        e.preventDefault();
+        primeiro.focus();
+      }
+    };
     document.addEventListener("keydown", aoTeclar);
     const botao = botaoRef.current;
     return () => {
