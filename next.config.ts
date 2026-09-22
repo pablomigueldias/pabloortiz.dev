@@ -79,7 +79,23 @@ const temaCodigoClaro = JSON.parse(
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   async redirects() {
-    return redirecionamentosAntigos;
+    return [
+      // www → domínio sem www: uma URL só por página para o Google. Duas regras:
+      // com "/:caminho*" a home saía com ":caminho*" literal no destino, e com
+      // "(.*)" a OpenNext dava 500 em caminho com barra. "+" exige 1 segmento ou mais.
+      ...[
+        { source: "/", destination: "https://pabloortiz.dev/" },
+        {
+          source: "/:caminho+",
+          destination: "https://pabloortiz.dev/:caminho+",
+        },
+      ].map((r) => ({
+        ...r,
+        has: [{ type: "host" as const, value: "www.pabloortiz.dev" }],
+        statusCode: 301 as const,
+      })),
+      ...redirecionamentosAntigos,
+    ];
   },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
