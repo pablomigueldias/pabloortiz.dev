@@ -10,9 +10,11 @@ import {
   frontmatterSchema,
   projetoSchema,
   SLUG,
+  type ItemSumario,
   type PostIndexado,
   type ProjetoIndexado,
 } from "../src/content/schema.ts";
+import { slugAscii } from "../src/mdx/rehype-slug-ascii.mjs";
 import { criarVerificador } from "./privacidade.ts";
 
 const RAIZ = path.resolve(import.meta.dirname, "..");
@@ -45,6 +47,31 @@ function minutosDeLeitura(corpo: string): number {
     .replace(/<[^>]+>/g, " ");
   const palavras = texto.split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.round(palavras / PALAVRAS_POR_MINUTO));
+}
+
+// Sumário com os h2 e h3. Os ids repetem o que o src/mdx/rehype-slug-ascii.mjs gera
+// no HTML: contam todos os headings, em ordem (o scripts/verificar-build.ts confere).
+function sumario(corpo: string): ItemSumario[] {
+  const usados = new Map<string, number>();
+  const itens: ItemSumario[] = [];
+  const semCodigo = corpo.replace(/^(```|~~~)[\s\S]*?^\1/gm, "");
+
+  for (const [, hashes = "", bruto = ""] of semCodigo.matchAll(
+    /^(#{1,6})[ \t]+(.+?)[ \t#]*$/gm,
+  )) {
+    const texto = bruto
+      .replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1") // [texto](url) → texto
+      .replace(/[`*_~]/g, "")
+      .replace(/\$([^$]*)\$/g, "$1")
+      .trim();
+    const base = slugAscii(texto) || "secao";
+    const n = usados.get(base) ?? 0;
+    usados.set(base, n + 1);
+    const nivel = hashes.length;
+    if (nivel === 2 || nivel === 3)
+      itens.push({ nivel, texto, id: n === 0 ? base : `${base}-${n}` });
+  }
+  return itens;
 }
 
 // Valida todos os .mdx de uma pasta com o schema dado. Erros vão para `erros`.
@@ -106,6 +133,8 @@ const posts: PostIndexado[] = (await processar("blog", frontmatterSchema)).map(
     ...dados,
     slug,
     minutosDeLeitura: minutosDeLeitura(corpo),
+    sumario: sumario(corpo),
+    temCTA: /<CTA[\s/>]/.test(corpo),
   }),
 );
 const projetos: ProjetoIndexado[] = (

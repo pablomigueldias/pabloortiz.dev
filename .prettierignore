@@ -3,3 +3,4 @@ docs/
 .open-next/
 package-lock.json
 .wrangler/
+public/pagefind/

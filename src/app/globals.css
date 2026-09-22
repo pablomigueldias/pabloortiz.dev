@@ -124,6 +124,10 @@ code[data-theme] span {
   --tw-prose-invert-code: var(--color-primary);
 }
 
+.post :is(h2, h3, h4) {
+  /* O header mobile é fixo: sem isto, o link do sumário esconde o título. */
+  scroll-margin-top: 5rem;
+}
 .post h2 {
   color: var(--color-primary);
   padding-bottom: 0.4em;
@@ -275,4 +279,31 @@ code[data-theme] span {
 .post .katex-display {
   overflow-x: auto;
   overflow-y: hidden;
+}
+
+/* Barra de leitura do post: só CSS, presa à rolagem da página. Sem suporte a
+   animation-timeline (Firefox, por enquanto), a barra simplesmente não aparece. */
+.barra-progresso {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  .barra-progresso {
+    display: block;
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 45; /* acima do header mobile (40), abaixo do menu aberto (50) */
+    height: 3px;
+    background: var(--color-primary);
+    transform-origin: 0 50%;
+    animation: progresso-leitura linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+@keyframes progresso-leitura {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
