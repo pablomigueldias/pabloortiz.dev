@@ -9,6 +9,9 @@ import { CTA } from "@/components/mdx/CTA";
 import { dataPorExtenso, ROTULO_PILAR } from "@/content/formatar";
 import { getAllPosts, getPost, getRelacionados } from "@/content/posts";
 import type { PostIndexado } from "@/content/schema";
+import { JsonLd } from "@/seo/JsonLd";
+import { metadataDaPagina } from "@/seo/metadata";
+import { ID_PESSOA, ID_SITE, trilha, url } from "@/seo/schema-org";
 
 // CTA do fim do post, quando o autor não pôs um <CTA> no meio do texto.
 const TEXTO_CTA: Record<PostIndexado["pilar"], string> = {
@@ -20,9 +23,23 @@ export async function generateMetadata({
   params,
 }: PageProps<"/blog/[slug]">): Promise<Metadata> {
   const post = getPost((await params).slug);
-  return post
-    ? { title: `${post.titulo} · Pablo Ortiz`, description: post.descricao }
-    : {};
+  if (!post) return {};
+  return metadataDaPagina({
+    titulo: post.titulo,
+    descricao: post.descricao,
+    caminho: `/blog/${post.slug}`,
+    artigo: {
+      publicado: post.data,
+      atualizado: post.atualizado,
+      secao: ROTULO_PILAR[post.pilar],
+      tags: post.tags,
+    },
+    imagem: {
+      caminho: `/og/blog/${post.slug}.png`,
+      alt: `Capa do post "${post.titulo}"`,
+    },
+    rascunho: post.draft,
+  });
 }
 
 export default async function Post({ params }: PageProps<"/blog/[slug]">) {
@@ -37,6 +54,34 @@ export default async function Post({ params }: PageProps<"/blog/[slug]">) {
 
   return (
     <>
+      <JsonLd
+        dados={{
+          "@graph": [
+            {
+              "@type": "BlogPosting",
+              headline: post.titulo,
+              description: post.descricao,
+              url: url(`/blog/${post.slug}`),
+              mainEntityOfPage: url(`/blog/${post.slug}`),
+              image: url(`/og/blog/${post.slug}.png`),
+              datePublished: post.data,
+              dateModified: post.atualizado ?? post.data,
+              inLanguage: post.lang,
+              articleSection: ROTULO_PILAR[post.pilar],
+              keywords: post.tags,
+              timeRequired: `PT${post.minutosDeLeitura}M`,
+              author: { "@id": ID_PESSOA },
+              publisher: { "@id": ID_PESSOA },
+              isPartOf: { "@id": ID_SITE },
+            },
+            trilha([
+              ["Blog", "/blog"],
+              [ROTULO_PILAR[post.pilar], `/blog/categoria/${post.pilar}`],
+              [post.titulo, `/blog/${post.slug}`],
+            ]),
+          ],
+        }}
+      />
       <div aria-hidden className="barra-progresso" />
       <article
         data-pagefind-body

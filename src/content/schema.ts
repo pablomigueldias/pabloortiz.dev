@@ -1,7 +1,8 @@
 import { z } from "zod";
 
-// Pilares abertos. "hardware" só entra quando existir o 1º projeto documentado.
-export const PILARES = ["ia-llms", "dados-ml"] as const;
+import { PILARES } from "./pilares.ts";
+
+export { PILARES };
 
 // Tags curadas: tag nova entra aqui antes de ser usada num post.
 export const TAGS = [

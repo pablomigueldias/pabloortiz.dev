@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
 import { BotaoWhatsApp } from "@/components/ui/BotaoWhatsApp";
 import { site } from "@/config/site";
+import { metadataDaPagina } from "@/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Contato · Pablo Ortiz",
-  description: "Fale comigo pelo WhatsApp, e-mail, LinkedIn ou GitHub.",
-};
+export const metadata = metadataDaPagina({
+  titulo: "Contato",
+  descricao: "Fale comigo pelo WhatsApp, e-mail, LinkedIn ou GitHub.",
+  caminho: "/contato",
+});
 
 export default function Contato() {
   return (

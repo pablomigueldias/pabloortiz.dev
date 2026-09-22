@@ -17,6 +17,7 @@ const eslintConfig = defineConfig([
     ".wrangler/**",
     // Índice de busca gerado no build.
     "public/pagefind/**",
+    "public/og/**",
   ]),
 ]);
 

@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { BotaoWhatsApp } from "@/components/ui/BotaoWhatsApp";
+import { metadataDaPagina } from "@/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Serviços · Pablo Ortiz",
-  description:
+export const metadata = metadataDaPagina({
+  titulo: "Serviços",
+  descricao:
     "Assistentes que respondem sobre os documentos da sua empresa, automação com LLM e aprovação humana, APIs e pipelines de dados em Python.",
-};
+  caminho: "/servicos",
+});
 
 const OFERTAS = [
   {

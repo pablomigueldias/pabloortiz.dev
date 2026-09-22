@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ROTULO_PILAR } from "@/content/formatar";
 import { getProjetos } from "@/content/projetos";
 import { projetosAnteriores } from "@/content/projetos-anteriores";
+import { metadataDaPagina } from "@/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Projetos · Pablo Ortiz",
-  description:
+export const metadata = metadataDaPagina({
+  titulo: "Projetos",
+  descricao:
     "Sistemas de IA e dados que eu construí, com o problema, as decisões e os números.",
-};
+  caminho: "/projetos",
+});
 
 export default function Projetos() {
   const projetos = getProjetos();

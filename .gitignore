@@ -21,6 +21,7 @@ rascunhos-locais/
 # --- Arquivos gerados ---
 src/content/index.generated.ts
 public/pagefind/
+public/og/
 
 # --- Dependências e builds ---
 node_modules/

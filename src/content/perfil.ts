@@ -1,7 +1,8 @@
 // Dados públicos do perfil: a lista branca da §10.4 do plano (nunca telefone ou
 // e-mail pessoal). Na Etapa 12 este arquivo passa a ser gerado a partir do
 // perfil_mestre.json do Copiloto.
-import { site } from "@/config/site";
+// Relativo com extensão: o scripts/gerar-og.ts importa este arquivo direto no Node.
+import { site } from "../config/site.ts";
 
 export const perfil = {
   nome: site.nome,
