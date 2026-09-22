@@ -3,6 +3,8 @@
 export const site = {
   nome: "Pablo Ortiz",
   url: "https://pabloortiz.dev",
+  // Único e-mail público (§10.4). Chega na caixa da Hostinger.
+  email: "contato@pabloortiz.dev",
   whatsapp: "5511925848819",
   linkedin: "https://www.linkedin.com/in/pablo-miguel-dias-ortiz/",
   github: "https://github.com/pablomigueldias",

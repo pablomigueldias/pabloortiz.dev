@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 // Manter fiel ao que o site realmente faz. Mudou o site (analytics, formulário,
 // newsletter)? Atualize esta página e a data no mesmo PR.
-const ATUALIZADO_EM = "21 de setembro de 2026";
+const ATUALIZADO_EM = "22 de setembro de 2026";
 
 export default function Privacidade() {
   return (
@@ -48,14 +48,15 @@ export default function Privacidade() {
         <h2>Links para outros serviços</h2>
         <p>
           Os botões de WhatsApp, LinkedIn e GitHub levam para esses serviços,
-          que têm as próprias políticas. Se você me mandar mensagem, uso o seu
-          contato só para responder.
+          que têm as próprias políticas. Se você me mandar mensagem ou e-mail,
+          uso o seu contato só para responder.
         </p>
 
         <h2>Seus direitos</h2>
         <p>
           Você pode pedir acesso, correção ou remoção de qualquer dado seu que
-          eu tenha, por exemplo, uma conversa. Basta falar comigo pelo{" "}
+          eu tenha, por exemplo, uma conversa. Basta escrever para{" "}
+          <a href={`mailto:${site.email}`}>{site.email}</a> ou falar comigo pelo{" "}
           <a href={site.linkedin}>LinkedIn</a> ou pelo WhatsApp da página de
           contato.
         </p>

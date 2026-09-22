@@ -4,7 +4,7 @@ import { site } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "Contato · Pablo Ortiz",
-  description: "Fale comigo pelo WhatsApp, LinkedIn ou GitHub.",
+  description: "Fale comigo pelo WhatsApp, e-mail, LinkedIn ou GitHub.",
 };
 
 export default function Contato() {
@@ -24,6 +24,11 @@ export default function Contato() {
       <ul className="mt-12 flex flex-col gap-4">
         {[
           {
+            rotulo: "E-mail",
+            href: `mailto:${site.email}`,
+            detalhe: site.email,
+          },
+          {
             rotulo: "LinkedIn",
             href: site.linkedin,
             detalhe: "perfil profissional e currículo",
@@ -37,8 +42,9 @@ export default function Contato() {
           <li key={c.rotulo}>
             <a
               href={c.href}
-              target="_blank"
-              rel="noopener noreferrer"
+              {...(c.href.startsWith("mailto:")
+                ? {}
+                : { target: "_blank", rel: "noopener noreferrer" })}
               className="bg-card border-border hover:border-primary/50 flex items-center justify-between rounded-xl border p-5 transition-colors"
             >
               <span>
