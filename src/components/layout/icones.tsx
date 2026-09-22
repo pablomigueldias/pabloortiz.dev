@@ -26,6 +26,11 @@ export const IconeBlog = (p: P) => (
     <path d="M8 12h8M8 16h5M8 8h4" />
   </svg>
 );
+export const IconeProjetos = (p: P) => (
+  <svg {...base} {...p}>
+    <path d="m8 9-4 3 4 3M16 9l4 3-4 3M13.5 5l-3 14" />
+  </svg>
+);
 export const IconeSol = (p: P) => (
   <svg {...base} {...p}>
     <circle cx="12" cy="12" r="4" />
