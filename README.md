@@ -2,11 +2,11 @@
 
 Blog e portfólio de Pablo Ortiz: IA aplicada, LLMs e dados.
 
-> Em construção. O site no ar em `pabloortiz.dev` ainda é a versão antiga.
+No ar em [pabloortiz.dev](https://pabloortiz.dev). Tudo é gerado no build: posts em MDX no repositório, sem banco e sem servidor próprio.
 
 ## Stack
 
-Next.js 16 (App Router) · TypeScript estrito · Tailwind CSS 4 · Cloudflare Workers (via OpenNext, em breve)
+Next.js 16 (App Router) · TypeScript estrito · Tailwind CSS 4 · MDX · Cloudflare Workers (via OpenNext) · Pagefind (busca)
 
 ## Rodando local
 
@@ -17,12 +17,25 @@ npm ci        # instala e liga o hook de pre-commit (gitleaks)
 npm run dev   # http://localhost:3000
 ```
 
-| Comando             | O que faz                            |
-| ------------------- | ------------------------------------ |
-| `npm run lint`      | ESLint                               |
-| `npm run typecheck` | gera os tipos de rota e roda o `tsc` |
-| `npm run format`    | Prettier                             |
-| `npm run build`     | build de produção                    |
+| Comando             | O que faz                                                         |
+| ------------------- | ----------------------------------------------------------------- |
+| `npm run lint`      | ESLint                                                            |
+| `npm run typecheck` | gera os tipos de rota e roda o `tsc`                              |
+| `npm run format`    | Prettier                                                          |
+| `npm run build`     | build de produção                                                 |
+| `npm run preview`   | build e servidor local no runtime da Cloudflare (igual ao deploy) |
+
+O `npm run build` também gera o que não fica no git: o índice de busca (`public/pagefind/`) e as imagens de compartilhamento (`public/og/`).
+
+## Deploy
+
+Cada merge na `main` vira deploy pelo Workers Builds da Cloudflare. Variáveis de **build** do Worker:
+
+| Variável              | Para quê                                                           |
+| --------------------- | ------------------------------------------------------------------ |
+| `SITE_ENV=production` | libera a indexação (`robots.txt` com `Allow` e sem `X-Robots-Tag`) |
+
+O Worker tem que caber em 3 MiB comprimido (plano grátis). Página que importa valor de `src/content/schema.ts` leva o Zod junto: constantes usadas em página ficam fora dele.
 
 ## Como escrever um post
 
@@ -78,7 +91,7 @@ Imagem nova? Rode `npm run limpar-imagens` antes do commit: tira os metadados e 
 
 A denylist (termos pessoais que nunca podem aparecer) fica em `privacidade.denylist.txt`, fora do git, e no secret `PRIVACIDADE_DENYLIST` do GitHub. As mensagens de erro nunca mostram o termo.
 
-O site só é indexado com `SITE_ENV=production`. Preview e build local saem com `noindex`.
+O site só é indexado com `SITE_ENV=production` (ver [Deploy](#deploy)). Preview e build local saem com `noindex`.
 
 Achou um problema de segurança? Veja [SECURITY.md](./SECURITY.md).
 
