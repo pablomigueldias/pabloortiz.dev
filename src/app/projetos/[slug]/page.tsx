@@ -3,13 +3,25 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ROTULO_PILAR } from "@/content/formatar";
 import { getProjeto, getProjetos } from "@/content/projetos";
+import { JsonLd } from "@/seo/JsonLd";
+import { metadataDaPagina } from "@/seo/metadata";
+import { ID_PESSOA, trilha, url } from "@/seo/schema-org";
 
 export async function generateMetadata({
   params,
 }: PageProps<"/projetos/[slug]">): Promise<Metadata> {
   const projeto = getProjeto((await params).slug);
   return projeto
-    ? { title: `${projeto.titulo} · Pablo Ortiz`, description: projeto.resumo }
+    ? metadataDaPagina({
+        titulo: projeto.titulo,
+        descricao: projeto.resumo,
+        caminho: `/projetos/${projeto.slug}`,
+        imagem: {
+          caminho: `/og/projetos/${projeto.slug}.png`,
+          alt: `Capa do case ${projeto.titulo}`,
+        },
+        rascunho: projeto.draft,
+      })
     : {};
 }
 
@@ -32,6 +44,27 @@ export default async function Projeto({
       data-pagefind-meta="tipo:Projeto"
       className="mx-auto max-w-3xl px-4 py-12 md:px-8 md:py-16"
     >
+      <JsonLd
+        dados={{
+          "@graph": [
+            {
+              "@type": "SoftwareSourceCode",
+              name: projeto.titulo,
+              description: projeto.resumo,
+              url: url(`/projetos/${projeto.slug}`),
+              codeRepository: projeto.repo,
+              image: url(`/og/projetos/${projeto.slug}.png`),
+              keywords: projeto.stack,
+              dateCreated: projeto.data,
+              author: { "@id": ID_PESSOA },
+            },
+            trilha([
+              ["Projetos", "/projetos"],
+              [projeto.titulo, `/projetos/${projeto.slug}`],
+            ]),
+          ],
+        }}
+      />
       <Link
         href="/projetos"
         data-pagefind-ignore

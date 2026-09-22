@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
 import { site } from "@/config/site";
+import { metadataDaPagina } from "@/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Privacidade · Pablo Ortiz",
-  description:
+export const metadata = metadataDaPagina({
+  titulo: "Privacidade",
+  descricao:
     "O que este site coleta (quase nada) e como pedir a remoção dos seus dados.",
-};
+  caminho: "/privacidade",
+});
 
 // Manter fiel ao que o site realmente faz. Mudou o site (analytics, formulário,
 // newsletter)? Atualize esta página e a data no mesmo PR.

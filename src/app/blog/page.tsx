@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
 import { ArquivoPosts } from "@/components/blog/ArquivoPosts";
 import { Busca } from "@/components/blog/Busca";
 import { getAllPosts } from "@/content/posts";
+import { metadataDaPagina } from "@/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Blog · Pablo Ortiz",
-  description:
+export const metadata = metadataDaPagina({
+  titulo: "Blog",
+  descricao:
     "IA aplicada, LLMs e dados: o que eu medi, o que errei e o que funcionou.",
-};
+  caminho: "/blog",
+});
 
 export default function Blog() {
   return (

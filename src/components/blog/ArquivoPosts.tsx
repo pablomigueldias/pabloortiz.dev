@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { ROTULO_PILAR } from "@/content/formatar";
 import { agruparPorAno, getAllPosts } from "@/content/posts";
-import { PILARES, type PostIndexado } from "@/content/schema";
+import { PILARES } from "@/content/pilares";
+import type { PostIndexado } from "@/content/schema";
 import { CartaoPost } from "./CartaoPost";
 
 type Props = {
