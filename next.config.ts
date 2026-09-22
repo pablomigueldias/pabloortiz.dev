@@ -1,6 +1,7 @@
 import path from "node:path";
 import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
+import temaClaroAltoContraste from "shiki/themes/github-light-high-contrast.mjs";
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -68,6 +69,13 @@ const redirecionamentosAntigos = [
   { source: "/:arquivo(Pablo.*Otiz.*\\.pdf)", destination: "/sobre" },
 ].map((r) => ({ ...r, statusCode: 301 as const }));
 
+// Tema claro do código com contraste AA em todos os fundos do site. O
+// github-light-high-contrast passa, menos o cinza dos comentários (#66707b), que dá
+// 4,2:1 sobre a linha destacada; #57606a dá 5,3:1. Objeto JSON: o Turbopack aceita.
+const temaCodigoClaro = JSON.parse(
+  JSON.stringify(temaClaroAltoContraste).replaceAll(/#66707b/gi, "#57606a"),
+);
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   async redirects() {
@@ -104,7 +112,7 @@ const withMDX = createMDX({
       [
         "rehype-pretty-code",
         {
-          theme: { light: "github-light", dark: "github-dark" },
+          theme: { light: temaCodigoClaro, dark: "github-dark-high-contrast" },
           keepBackground: false,
         },
       ],
