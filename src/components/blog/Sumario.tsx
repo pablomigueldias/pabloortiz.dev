@@ -14,12 +14,12 @@ export function Sumario({ itens }: { itens: ItemSumario[] }) {
         <summary className="text-foreground cursor-pointer px-6 py-4 text-sm font-bold tracking-wider uppercase select-none">
           Neste post
         </summary>
-        <ol className="flex flex-col gap-2 px-6 pb-5 text-sm">
+        <ol className="flex flex-col px-6 pb-5 text-sm">
           {itens.map((item) => (
             <li key={item.id} className={item.nivel === 3 ? "pl-4" : ""}>
               <a
                 href={`#${item.id}`}
-                className="text-muted-foreground hover:text-primary transition-colors"
+                className="text-muted-foreground hover:text-primary inline-block py-1 transition-colors"
               >
                 {item.texto}
               </a>

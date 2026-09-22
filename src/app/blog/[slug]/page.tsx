@@ -108,7 +108,7 @@ export default async function Post({ params }: PageProps<"/blog/[slug]">) {
               {ROTULO_PILAR[post.pilar]}
             </Link>
             {post.draft && (
-              <span className="rounded-full border border-amber-500/40 bg-amber-500/10 px-3 py-1 text-xs font-bold tracking-wider text-amber-700 uppercase dark:text-amber-400">
+              <span className="rounded-full border border-amber-500/40 bg-amber-500/10 px-3 py-1 text-xs font-bold tracking-wider text-amber-800 uppercase dark:text-amber-400">
                 Rascunho
               </span>
             )}

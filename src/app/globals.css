@@ -5,14 +5,16 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* Identidade herdada do my-portifolio (zinc + emerald), com contraste AA conferido:
-   no claro o verde é emerald-700 (o emerald-600 antigo dava 3,4:1 como texto);
+   no claro o verde é #036548, mais escuro que o emerald-700 (#047857 dava 4,3:1
+   em selo com bg-primary/10 e em `code` sobre --muted; o emerald-600 antigo, 3,4:1).
+   Pior caso agora: 4,8:1 (texto verde sobre --muted com 10% de verde);
    no escuro o texto do botão é escuro (branco sobre emerald-500 dava 2,5:1). */
 :root {
   --background: #f4f4f5; /* zinc-100 */
   --foreground: #18181b; /* zinc-900 */
   --card: #ffffff;
   --card-foreground: #18181b;
-  --primary: #047857; /* emerald-700 */
+  --primary: #036548; /* entre emerald-700 e 800: AA até sobre fundo tingido */
   --primary-foreground: #ffffff;
   --muted: #e4e4e7; /* zinc-200 */
   --muted-foreground: #52525b; /* zinc-600 */

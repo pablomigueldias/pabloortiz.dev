@@ -52,3 +52,7 @@ jobs:
       - run: npm run build
         env:
           INCLUIR_RASCUNHOS: "1"
+      # Empacota o Worker a partir do build acima e mede: o plano grátis da
+      # Cloudflare aceita até 3 MiB comprimido.
+      - run: npx opennextjs-cloudflare build --skipNextBuild
+      - run: npm run verificar:worker

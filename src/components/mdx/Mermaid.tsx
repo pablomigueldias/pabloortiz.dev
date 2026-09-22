@@ -27,6 +27,10 @@ export function Mermaid({ titulo, children }: Props) {
           startOnLoad: false,
           securityLevel: "strict",
           theme: escuro ? "dark" : "default",
+          // No tema escuro, o rótulo das setas saía #ccc sobre #585858 (4,4:1).
+          ...(escuro && {
+            themeVariables: { edgeLabelBackground: "#27272a" },
+          }),
         });
         const { svg } = await mermaid.render(id, children.trim());
         if (!cancelado) setSvg(svg);
