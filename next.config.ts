@@ -45,8 +45,25 @@ const securityHeaders = [
     : [{ key: "X-Robots-Tag", value: "noindex, nofollow" }]),
 ];
 
+// URLs do site antigo (SPA em React). Não havia nada indexado (2026-09-22), mas
+// links antigos em perfis e mensagens continuam chegando. Posts antigos não foram
+// migrados: /blog/<slug antigo> cai no 404, que aponta para o blog.
+const redirecionamentosAntigos = [
+  { source: "/projects", destination: "/projetos" },
+  { source: "/projeto/:id", destination: "/projetos" },
+  { source: "/contact", destination: "/contato" },
+  { source: "/templates", destination: "/" },
+  { source: "/login", destination: "/" },
+  { source: "/admin/:caminho*", destination: "/" },
+  // O currículo em PDF antigo (nome com erro de digitação) saiu do ar.
+  { source: "/:arquivo(Pablo.*Otiz.*\\.pdf)", destination: "/sobre" },
+].map((r) => ({ ...r, statusCode: 301 as const }));
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  async redirects() {
+    return redirecionamentosAntigos;
+  },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },

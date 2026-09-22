@@ -1,9 +1,28 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { BotaoWhatsApp } from "@/components/ui/BotaoWhatsApp";
+import { site } from "@/config/site";
 import { dataPorExtenso, ROTULO_PILAR } from "@/content/formatar";
 import { perfil } from "@/content/perfil";
 import { getAllPosts } from "@/content/posts";
 import { getProjetos } from "@/content/projetos";
+import { JsonLd } from "@/seo/JsonLd";
+import { metadataDaPagina } from "@/seo/metadata";
+import { pessoa, siteWeb } from "@/seo/schema-org";
+
+const TITULO_HOME = `${site.nome} · ${perfil.titulo}`;
+
+const base = metadataDaPagina({
+  titulo: perfil.titulo,
+  descricao: perfil.frase,
+  caminho: "/",
+});
+export const metadata: Metadata = {
+  ...base,
+  title: { absolute: TITULO_HOME },
+  openGraph: { ...base.openGraph, title: TITULO_HOME },
+  twitter: { ...base.twitter, title: TITULO_HOME },
+};
 
 export default function Home() {
   const destaque = getProjetos().find((p) => p.destaque);
@@ -11,6 +30,7 @@ export default function Home() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 md:px-8">
+      <JsonLd dados={{ "@graph": [siteWeb(), pessoa()] }} />
       <section className="flex flex-col justify-center py-20 lg:min-h-[70vh]">
         <p className="border-primary/30 bg-primary/10 text-primary mb-6 inline-flex w-fit items-center gap-2 rounded-full border px-3 py-1 text-xs font-bold tracking-wider uppercase">
           <span aria-hidden className="bg-primary h-1.5 w-1.5 rounded-full" />

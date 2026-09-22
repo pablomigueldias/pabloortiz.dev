@@ -1,15 +1,26 @@
-import type { Metadata } from "next";
 import { site } from "@/config/site";
 import { perfil } from "@/content/perfil";
+import { JsonLd } from "@/seo/JsonLd";
+import { metadataDaPagina } from "@/seo/metadata";
+import { pessoa, trilha } from "@/seo/schema-org";
 
-export const metadata: Metadata = {
-  title: "Sobre · Pablo Ortiz",
-  description: perfil.resumo,
-};
+export const metadata = metadataDaPagina({
+  titulo: "Sobre",
+  descricao: perfil.resumo,
+  caminho: "/sobre",
+});
 
 export default function Sobre() {
   return (
     <section className="mx-auto max-w-3xl px-4 py-12 md:px-8 md:py-16">
+      <JsonLd
+        dados={{
+          "@graph": [
+            { "@type": "ProfilePage", mainEntity: pessoa() },
+            trilha([["Sobre", "/sobre"]]),
+          ],
+        }}
+      />
       <h1 className="text-foreground text-4xl font-bold">Sobre</h1>
       <p className="text-primary mt-4 font-semibold">{perfil.titulo}</p>
       <p className="text-foreground mt-6 text-lg leading-relaxed">
