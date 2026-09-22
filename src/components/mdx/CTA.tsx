@@ -19,6 +19,7 @@ export function CTA({
         href={linkWhatsApp(`Olá, Pablo! Vi seu post sobre ${assunto}.`)}
         rel="noopener noreferrer"
         target="_blank"
+        className="bg-primary text-primary-foreground shrink-0 rounded-xl px-5 py-2.5 text-center text-sm font-semibold transition-opacity hover:opacity-90"
       >
         Me chama no WhatsApp
       </a>
