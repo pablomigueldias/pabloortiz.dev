@@ -11,13 +11,19 @@ const isProduction = process.env.SITE_ENV === "production";
 // Bloqueante desde a Etapa 4 (testado com Mermaid, KaTeX, Shiki, tema e next/image).
 // Sem nonce: o site é estático, e nonce obrigaria renderizar cada página no servidor.
 // 'wasm-unsafe-eval' é para o WebAssembly da busca (Pagefind); não libera eval de JS.
+// Cloudflare Web Analytics (sem cookie): a Cloudflare injeta o beacon de
+// static.cloudflareinsights.com, que envia as métricas para cloudflareinsights.com.
+const WEB_ANALYTICS = {
+  script: "https://static.cloudflareinsights.com",
+  envio: "https://cloudflareinsights.com",
+};
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'${isDev ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' ${WEB_ANALYTICS.script}${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' blob: data:",
   "font-src 'self'",
-  "connect-src 'self'",
+  `connect-src 'self' ${WEB_ANALYTICS.envio}`,
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
