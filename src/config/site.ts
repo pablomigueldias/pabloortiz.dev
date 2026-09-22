@@ -8,6 +8,12 @@ export const site = {
   whatsapp: "5511925848819",
   linkedin: "https://www.linkedin.com/in/pablo-miguel-dias-ortiz/",
   github: "https://github.com/pablomigueldias",
+  // Formulário de contato. A site key do Turnstile é pública (vai no HTML); o
+  // secret e a chave do Resend ficam só nos secrets do Worker.
+  // Enquanto a site key for null, produção mostra WhatsApp e e-mail no lugar do formulário.
+  turnstileSiteKey: null as string | null,
+  // Remetente dos e-mails do formulário: precisa ser do domínio verificado no Resend.
+  remetenteFormulario: "Site pabloortiz.dev <site@pabloortiz.dev>",
 } as const;
 
 export function linkWhatsApp(mensagem: string): string {

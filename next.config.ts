@@ -17,13 +17,16 @@ const WEB_ANALYTICS = {
   script: "https://static.cloudflareinsights.com",
   envio: "https://cloudflareinsights.com",
 };
+// Turnstile (anti-robô do formulário de /contato): script e iframe do desafio.
+const TURNSTILE = "https://challenges.cloudflare.com";
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' ${WEB_ANALYTICS.script}${isDev ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' ${WEB_ANALYTICS.script} ${TURNSTILE}${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' blob: data:",
   "font-src 'self'",
   `connect-src 'self' ${WEB_ANALYTICS.envio}`,
+  `frame-src ${TURNSTILE}`,
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
