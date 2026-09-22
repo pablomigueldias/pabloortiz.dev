@@ -49,10 +49,10 @@ jobs:
       - run: npm run typecheck
       - run: npm run format:check
       # Com rascunhos: o CI testa a renderização de todo post, inclusive os drafts.
-      - run: npm run build
+      # O build da OpenNext roda o `npm run build` (com os hooks: índice, verificação,
+      # busca, imagens) em modo standalone e empacota o Worker, igual ao deploy.
+      - run: npx opennextjs-cloudflare build
         env:
           INCLUIR_RASCUNHOS: "1"
-      # Empacota o Worker a partir do build acima e mede: o plano grátis da
-      # Cloudflare aceita até 3 MiB comprimido.
-      - run: npx opennextjs-cloudflare build --skipNextBuild
+      # O plano grátis da Cloudflare aceita até 3 MiB comprimido.
       - run: npm run verificar:worker

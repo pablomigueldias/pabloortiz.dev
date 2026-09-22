@@ -1,7 +1,7 @@
 // Mede o Worker que vai para a Cloudflare e falha se passar do teto. O plano grátis
 // aceita 3 MiB (3.072 KiB) comprimido, e o deploy só quebra na hora de publicar.
 // Duas vezes uma dependência (next/og, Zod) passou do limite sem ninguém ver.
-// Uso: depois de `opennextjs-cloudflare build` (o CI roda com --skipNextBuild).
+// Uso: depois de `opennextjs-cloudflare build`.
 import { execFileSync } from "node:child_process";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
