@@ -48,6 +48,27 @@ export default function Privacidade() {
           Não vejo seu endereço IP nem consigo separar uma pessoa da outra.
         </p>
 
+        <h2>Formulário de contato</h2>
+        <p>
+          Se você usar o formulário da página de contato, ele envia o seu{" "}
+          <strong>nome, e-mail e mensagem</strong> para a minha caixa{" "}
+          <a href={`mailto:${site.email}`}>{site.email}</a>. O site não guarda
+          nada: a mensagem existe só como e-mail. Uso esses dados só para
+          responder e apago a conversa quando ela não for mais necessária, ou
+          antes, se você pedir.
+        </p>
+        <p>
+          O envio passa pelo{" "}
+          <a href="https://resend.com/legal/privacy-policy">Resend</a>, serviço
+          de e-mail que pode processar os dados fora do Brasil, e o formulário
+          usa o{" "}
+          <a href="https://www.cloudflare.com/pt-br/turnstile-privacy-policy/">
+            Cloudflare Turnstile
+          </a>{" "}
+          para barrar robôs, sem cookies de rastreamento. O Turnstile só é
+          carregado na página de contato.
+        </p>
+
         <h2>Hospedagem</h2>
         <p>
           O site é hospedado na Cloudflare, que processa dados técnicos da

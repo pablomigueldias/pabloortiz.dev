@@ -1,5 +1,7 @@
+import { FormularioContato } from "@/components/contato/FormularioContato";
 import { BotaoWhatsApp } from "@/components/ui/BotaoWhatsApp";
 import { site } from "@/config/site";
+import { TURNSTILE_TESTE } from "@/contato/formulario";
 import { metadataDaPagina } from "@/seo/metadata";
 
 export const metadata = metadataDaPagina({
@@ -7,6 +9,12 @@ export const metadata = metadataDaPagina({
   descricao: "Fale comigo pelo WhatsApp, e-mail, LinkedIn ou GitHub.",
   caminho: "/contato",
 });
+
+// Sem a site key real, produção não mostra o formulário (o envio falharia).
+// No `next dev`, a chave de teste do Turnstile (sempre passa).
+const siteKey =
+  site.turnstileSiteKey ??
+  (process.env.NODE_ENV === "development" ? TURNSTILE_TESTE.siteKey : null);
 
 export default function Contato() {
   return (
@@ -21,6 +29,18 @@ export default function Contato() {
         mensagem="Olá, Pablo! Vim pela página de contato."
         className="mt-10"
       />
+
+      {siteKey && (
+        <section aria-labelledby="escreva-aqui" className="mt-14">
+          <h2
+            id="escreva-aqui"
+            className="text-foreground mb-6 text-2xl font-bold"
+          >
+            Ou escreva aqui
+          </h2>
+          <FormularioContato siteKey={siteKey} />
+        </section>
+      )}
 
       <ul className="mt-12 flex flex-col gap-4">
         {[
