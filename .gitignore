@@ -6,6 +6,9 @@
 .dev.vars.*
 *.pem
 *.key
+*.p12
+*.pfx
+id_rsa*
 privacidade.denylist.txt
 
 # --- Planejamento e rascunhos locais ---
@@ -33,6 +36,12 @@ build/
 coverage/
 *.tsbuildinfo
 next-env.d.ts
+
+# --- Sobras de editor e de sistema ---
+# `post.mdx~` guarda a versão de antes — a que ainda tinha o dado que o linter
+# de privacidade mandou tirar.
+*~
+*.swp
 
 # --- Logs e sistema ---
 *.log
