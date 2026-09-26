@@ -10,7 +10,7 @@ export const metadata = metadataDaPagina({
 
 // Manter fiel ao que o site realmente faz. Mudou o site (analytics, formulário,
 // newsletter)? Atualize esta página e a data no mesmo PR.
-const ATUALIZADO_EM = "26 de setembro de 2026";
+const ATUALIZADO_EM = "26 de setembro de 2026"; // trocar pela data do go-live do atendente (G2)
 
 export default function Privacidade() {
   return (
@@ -87,6 +87,61 @@ export default function Privacidade() {
           um clique, e quem sai não recebe mais nada. Para apagar o seu endereço
           também da lista, escreva para{" "}
           <a href={`mailto:${site.email}`}>{site.email}</a>.
+        </p>
+
+        <h2>Atendente virtual do WhatsApp comercial</h2>
+        <p>
+          Quem escreve no WhatsApp comercial deste site é atendido primeiro por
+          um <strong>assistente virtual</strong>, que se apresenta como tal na
+          primeira mensagem. Ele responde perguntas sobre os serviços, entende o
+          que o seu negócio precisa, marca uma reunião e me avisa. Negociação e
+          proposta são sempre comigo. O responsável pelos dados sou eu, Pablo
+          Ortiz, pelo e-mail <a href={`mailto:${site.email}`}>{site.email}</a>.
+        </p>
+        <p>
+          <strong>O que ele guarda:</strong> o seu número e o nome do seu
+          WhatsApp, o que você escreve na conversa (por exemplo, o nome e o ramo
+          da sua empresa, o tamanho da equipe e o que você quer resolver) e, se
+          você marcar reunião, o e-mail do convite. Ele não pede CPF, documento
+          nem dado de saúde, e não pede dado de clientes seus.{" "}
+          <strong>Imagens e arquivos não são abertos</strong>: ficam só no meu
+          celular, como qualquer mensagem, e o assistente pede que você conte em
+          texto. Áudio é transcrito no meu próprio computador e o arquivo é
+          apagado em seguida.
+        </p>
+        <p>
+          <strong>Para quê e com que base:</strong> para responder ao contato
+          que você fez e preparar uma possível proposta (LGPD, art. 7º, V), e
+          para no máximo um lembrete nas 24 horas depois da sua última mensagem,
+          por legítimo interesse (art. 7º, IX). Nada de mensagem para quem não
+          escreveu primeiro, e quem escreve &ldquo;parar&rdquo; não recebe mais
+          nada.
+        </p>
+        <p>
+          <strong>Quem mais trata esses dados:</strong> o WhatsApp (Meta), que
+          leva as mensagens; o Google (Gemini), que gera as respostas do
+          assistente, no plano gratuito, em que o Google pode usar o conteúdo
+          para melhorar os produtos dele; o Groq, que só entra se o Gemini
+          estiver fora do ar e não usa o conteúdo para treinar modelos; o
+          Telegram, por onde o assistente me avisa de um contato novo; e o
+          Cal.com, se você marcar reunião. Todos eles tratam dados fora do
+          Brasil, principalmente nos Estados Unidos (LGPD, art. 33). O
+          assistente roda no meu computador, no Brasil.
+        </p>
+        <p>
+          <strong>Por quanto tempo:</strong> 90 dias sem mensagem, se a conversa
+          parar antes de entender o que você precisa; 180 dias, se parar depois
+          disso sem reunião marcada. Depois, tudo é apagado. Se você pedir para
+          parar, o texto da conversa é apagado na hora, e fica só o seu número
+          cifrado, para o assistente não voltar a falar com você. Se virarmos
+          parceiros de trabalho, os dados passam para o registro do contrato.
+        </p>
+        <p>
+          <strong>Seus direitos:</strong> escreva{" "}
+          <strong>APAGAR MEUS DADOS</strong> na própria conversa, ou mande um
+          e-mail para <a href={`mailto:${site.email}`}>{site.email}</a>, e eu
+          apago em até 15 dias (na prática, no mesmo dia). Também pode pedir uma
+          cópia do que o assistente guardou, ou a correção de algum dado.
         </p>
 
         <h2>Hospedagem</h2>
