@@ -108,6 +108,7 @@ export default function Servicos() {
       <div className="mt-8 flex flex-wrap items-center gap-4">
         <BotaoWhatsApp
           mensagem={MENSAGEM_RAIOX}
+          evento="raiox_clique"
           texto="Marcar o raio-x gratuito"
         />
         <Link
@@ -251,6 +252,7 @@ export default function Servicos() {
         </p>
         <BotaoWhatsApp
           mensagem={MENSAGEM_RAIOX}
+          evento="raiox_clique"
           texto="Marcar o raio-x pelo WhatsApp"
           className="mt-6"
         />

@@ -47,6 +47,14 @@ export default function Privacidade() {
           trouxe o link), país, navegador e o tempo de carregamento das páginas.
           Não vejo seu endereço IP nem consigo separar uma pessoa da outra.
         </p>
+        <p>
+          O site também conta, no próprio servidor, três ações: cliques nos
+          botões do WhatsApp, cliques em &ldquo;marcar o raio-x&rdquo; e
+          inscrições confirmadas na newsletter. Cada contagem guarda só o nome
+          da ação, a página e, quando o link trouxer, a origem da campanha (os
+          parâmetros <code>utm</code> da URL). Nada de cookie, endereço IP,
+          navegador ou e-mail: são totais, como as estatísticas acima.
+        </p>
 
         <h2>Formulário de contato</h2>
         <p>
