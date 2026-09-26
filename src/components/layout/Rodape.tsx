@@ -8,6 +8,13 @@ export function Rodape() {
         <p>
           © {new Date().getFullYear()} {site.nome} ·{" "}
           <Link
+            href="/newsletter"
+            className="hover:text-primary underline underline-offset-4"
+          >
+            Newsletter
+          </Link>{" "}
+          ·{" "}
+          <Link
             href="/privacidade"
             className="hover:text-primary underline underline-offset-4"
           >

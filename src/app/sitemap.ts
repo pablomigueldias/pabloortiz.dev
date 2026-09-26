@@ -12,9 +12,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     datas.length > 0 ? datas.sort().at(-1) : undefined;
 
   return [
-    ...["/", "/sobre", "/servicos", "/contato", "/privacidade"].map(
-      (caminho) => ({ url: `${site.url}${caminho === "/" ? "" : caminho}` }),
-    ),
+    ...[
+      "/",
+      "/sobre",
+      "/servicos",
+      "/newsletter",
+      "/contato",
+      "/privacidade",
+    ].map((caminho) => ({
+      url: `${site.url}${caminho === "/" ? "" : caminho}`,
+    })),
     {
       url: `${site.url}/blog`,
       lastModified: ultimaAtualizacao(posts.map((p) => p.atualizado ?? p.data)),
