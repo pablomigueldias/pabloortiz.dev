@@ -24,6 +24,12 @@ export const TAGS = [
   "whisper",
   "fundamentos",
   "carreira",
+  // Pilar automacao-negocio: o assunto do dono de negócio, não a tecnologia.
+  "whatsapp",
+  "atendimento",
+  "crm",
+  "lgpd",
+  "automacao",
 ] as const;
 
 // Slug = nome do arquivo: minúsculas, sem acento, palavras separadas por hífen.
