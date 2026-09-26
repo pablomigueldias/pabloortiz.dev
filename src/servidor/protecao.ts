@@ -54,7 +54,7 @@ export function ipDe(request: Request): string {
 
 // Binding de Rate Limiting do Worker (wrangler.jsonc). No `next dev` não existe.
 export async function dentroDoLimite(
-  binding: "LIMITE_CONTATO" | "LIMITE_NEWSLETTER",
+  binding: "LIMITE_CONTATO" | "LIMITE_NEWSLETTER" | "LIMITE_EVENTOS",
   ip: string,
 ): Promise<boolean> {
   let limitador: LimitadorDeTaxa | undefined;

@@ -43,6 +43,7 @@
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "verificar:imagens": "node scripts/verificar-imagens.ts",
     "verificar:worker": "node scripts/verificar-worker.ts",
+    "eventos": "node scripts/ver-eventos.ts",
     "limpar-imagens": "node scripts/limpar-imagens.ts"
   },
   "dependencies": {

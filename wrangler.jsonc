@@ -30,6 +30,16 @@
       "namespace_id": "1002",
       "simple": { "limit": 5, "period": 60 },
     },
+    // Cliques medidos (src/app/api/evento/route.ts): folgado, só barra robô.
+    {
+      "name": "LIMITE_EVENTOS",
+      "namespace_id": "1003",
+      "simple": { "limit": 30, "period": 60 },
+    },
+  ],
+  // Contagem agregada de cliques e inscrições, sem cookie (src/servidor/eventos.ts).
+  "analytics_engine_datasets": [
+    { "binding": "EVENTOS", "dataset": "pabloortiz_eventos" },
   ],
   "images": {
     // Otimização do next/image (componente Figure) pelo Cloudflare Images.

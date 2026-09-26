@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { MedicaoCliques } from "@/components/layout/MedicaoCliques";
 import { Rodape } from "@/components/layout/Rodape";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { site } from "@/config/site";
@@ -67,6 +68,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </main>
           <Rodape />
         </div>
+        <MedicaoCliques />
       </body>
     </html>
   );

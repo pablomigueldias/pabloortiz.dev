@@ -4,6 +4,7 @@ import { emailBoasVindas } from "@/newsletter/emails";
 import { LIMITES_NEWSLETTER } from "@/newsletter/formulario";
 import { enviar, inscrever, situacao } from "@/newsletter/resend";
 import { segredoDaNewsletter } from "@/newsletter/segredo";
+import { registrarEvento } from "@/servidor/eventos";
 import { dentroDoLimite, erro, ipDe, lerCorpo } from "@/servidor/protecao";
 
 // Segundo passo do double opt-in: o botão de /newsletter/confirmar manda o
@@ -50,6 +51,7 @@ export async function POST(request: Request) {
 
   // A inscrição já valeu. Se o agradecimento não sair, o log mostra, e a
   // pessoa continua na lista: não é motivo para dizer que falhou.
+  registrarEvento("newsletter_inscricao", "/newsletter/confirmar");
   await enviar(email, emailBoasVindas());
   return Response.json({ ok: true });
 }
