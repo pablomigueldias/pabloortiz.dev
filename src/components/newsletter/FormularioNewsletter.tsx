@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTurnstile } from "@/components/useTurnstile";
-import { LIMITES } from "@/contato/formulario";
+import { LIMITES_NEWSLETTER } from "@/newsletter/formulario";
 
 type Estado =
   | { tipo: "editando" }
@@ -13,13 +13,11 @@ type Estado =
 const campo =
   "bg-card border-border text-foreground placeholder:text-muted-foreground focus:border-primary w-full rounded-xl border px-4 py-3 outline-none";
 
-export function FormularioContato({ siteKey }: { siteKey: string }) {
-  const {
-    caixa,
-    token,
-    falhou: turnstileFalhou,
-    reiniciar,
-  } = useTurnstile(siteKey, "contato");
+export function FormularioNewsletter({ siteKey }: { siteKey: string }) {
+  const { caixa, token, falhou, reiniciar } = useTurnstile(
+    siteKey,
+    "newsletter",
+  );
   const [estado, setEstado] = useState<Estado>({ tipo: "editando" });
 
   async function enviar(e: React.FormEvent<HTMLFormElement>) {
@@ -27,7 +25,7 @@ export function FormularioContato({ siteKey }: { siteKey: string }) {
     const dados = Object.fromEntries(new FormData(e.currentTarget));
     setEstado({ tipo: "enviando" });
     try {
-      const resposta = await fetch("/api/contato", {
+      const resposta = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...dados, token }),
@@ -37,14 +35,16 @@ export function FormularioContato({ siteKey }: { siteKey: string }) {
         setEstado({ tipo: "enviado" });
         return;
       }
-      setEstado({ tipo: "erro", mensagem: corpo.erro ?? "O envio falhou." });
+      setEstado({
+        tipo: "erro",
+        mensagem: corpo.erro ?? "A inscrição falhou.",
+      });
     } catch {
       setEstado({
         tipo: "erro",
         mensagem: "Sem conexão. Confira a internet e tente de novo.",
       });
     }
-    // O token do Turnstile vale uma vez só: pede outro para a próxima tentativa.
     reiniciar();
   }
 
@@ -54,9 +54,11 @@ export function FormularioContato({ siteKey }: { siteKey: string }) {
         role="status"
         className="border-primary/30 bg-primary/5 rounded-xl border p-6"
       >
-        <p className="text-foreground font-semibold">Mensagem enviada.</p>
+        <p className="text-foreground font-semibold">Falta um passo.</p>
         <p className="text-muted-foreground mt-2">
-          Obrigado! Respondo no e-mail que você informou.
+          Mandei um e-mail com o link de confirmação. Abra e clique em
+          &ldquo;Confirmar inscrição&rdquo;. Se não chegar em alguns minutos,
+          olhe o spam.
         </p>
       </div>
     );
@@ -66,40 +68,15 @@ export function FormularioContato({ siteKey }: { siteKey: string }) {
 
   return (
     <form onSubmit={enviar} className="relative flex flex-col gap-5">
-      <div className="grid gap-5 sm:grid-cols-2">
-        <label className="flex flex-col gap-2 text-sm font-medium">
-          Nome
-          <input
-            name="nome"
-            required
-            autoComplete="name"
-            minLength={LIMITES.nome.min}
-            maxLength={LIMITES.nome.max}
-            className={campo}
-          />
-        </label>
-        <label className="flex flex-col gap-2 text-sm font-medium">
-          E-mail
-          <input
-            name="email"
-            type="email"
-            required
-            autoComplete="email"
-            maxLength={LIMITES.email.max}
-            className={campo}
-          />
-        </label>
-      </div>
       <label className="flex flex-col gap-2 text-sm font-medium">
-        Mensagem
-        <textarea
-          name="mensagem"
+        Seu e-mail
+        <input
+          name="email"
+          type="email"
           required
-          rows={6}
-          minLength={LIMITES.mensagem.min}
-          maxLength={LIMITES.mensagem.max}
-          placeholder="Vaga, projeto ou dúvida. Se for projeto, conte o que precisa e para quando."
-          className={`${campo} resize-y`}
+          autoComplete="email"
+          maxLength={LIMITES_NEWSLETTER.email.max}
+          className={campo}
         />
       </label>
 
@@ -115,10 +92,10 @@ export function FormularioContato({ siteKey }: { siteKey: string }) {
       </div>
 
       <div ref={caixa} className="min-h-[65px]" />
-      {turnstileFalhou && (
+      {falhou && (
         <p className="text-sm text-amber-700 dark:text-amber-400">
           A verificação anti-robô não carregou. Um bloqueador de conteúdo pode
-          estar impedindo. Se preferir, use o WhatsApp ou o e-mail acima.
+          estar impedindo.
         </p>
       )}
 
@@ -128,7 +105,7 @@ export function FormularioContato({ siteKey }: { siteKey: string }) {
           disabled={enviando || !token}
           className="bg-primary text-primary-foreground rounded-xl px-6 py-3 text-sm font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {enviando ? "Enviando…" : "Enviar mensagem"}
+          {enviando ? "Enviando…" : "Quero receber"}
         </button>
         <p aria-live="polite" className="text-sm">
           {estado.tipo === "erro" && (
@@ -140,7 +117,8 @@ export function FormularioContato({ siteKey }: { siteKey: string }) {
       </div>
 
       <p className="text-muted-foreground text-xs">
-        Uso seus dados só para responder. Nada fica guardado no site. Veja a{" "}
+        Uso seu e-mail só para mandar a newsletter, e você sai com um clique em
+        qualquer edição. Veja a{" "}
         <a href="/privacidade" className="hover:text-primary underline">
           página de privacidade
         </a>

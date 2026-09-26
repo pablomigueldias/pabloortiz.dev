@@ -18,7 +18,7 @@ const WEB_ANALYTICS = {
   script: "https://static.cloudflareinsights.com",
   envio: "https://cloudflareinsights.com",
 };
-// Turnstile (anti-robô do formulário de /contato): script e iframe do desafio.
+// Turnstile (anti-robô dos formulários de /contato e /newsletter): script e iframe do desafio.
 const TURNSTILE = "https://challenges.cloudflare.com";
 const csp = [
   "default-src 'self'",

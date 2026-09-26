@@ -10,7 +10,7 @@ export const metadata = metadataDaPagina({
 
 // Manter fiel ao que o site realmente faz. Mudou o site (analytics, formulário,
 // newsletter)? Atualize esta página e a data no mesmo PR.
-const ATUALIZADO_EM = "22 de setembro de 2026";
+const ATUALIZADO_EM = "26 de setembro de 2026";
 
 export default function Privacidade() {
   return (
@@ -66,7 +66,27 @@ export default function Privacidade() {
             Cloudflare Turnstile
           </a>{" "}
           para barrar robôs, sem cookies de rastreamento. O Turnstile só é
-          carregado na página de contato.
+          carregado nas páginas de contato e da newsletter.
+        </p>
+
+        <h2>Newsletter</h2>
+        <p>
+          Se você se inscrever na{" "}
+          <a href="/newsletter">{site.newsletter.nome}</a>, o site pede só o seu{" "}
+          <strong>e-mail</strong>, para uma finalidade: mandar as edições. A
+          inscrição tem duas etapas. Primeiro vai um e-mail com um link de
+          confirmação, e até você clicar nele seu endereço não fica guardado em
+          lugar nenhum: ele viaja dentro do próprio link, assinado para não ser
+          falsificado, e o link vence em 48 horas.
+        </p>
+        <p>
+          Depois da confirmação, o e-mail fica na lista de contatos do{" "}
+          <a href="https://resend.com/legal/privacy-policy">Resend</a>, que
+          envia as edições e guarda os dados nos Estados Unidos. Ele fica lá
+          enquanto você estiver inscrito. Toda edição tem um link para sair em
+          um clique, e quem sai não recebe mais nada. Para apagar o seu endereço
+          também da lista, escreva para{" "}
+          <a href={`mailto:${site.email}`}>{site.email}</a>.
         </p>
 
         <h2>Hospedagem</h2>

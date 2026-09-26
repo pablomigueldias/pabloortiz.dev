@@ -14,6 +14,15 @@ export const site = {
   turnstileSiteKey: "0x4AAAAAAFAAKjuRymGtfh4q" as string | null,
   // Remetente dos e-mails do formulário: precisa ser do domínio verificado no Resend.
   remetenteFormulario: "Site pabloortiz.dev <site@pabloortiz.dev>",
+  newsletter: {
+    nome: "Nenhuma mensagem sem resposta",
+    promessa:
+      "A cada 15 dias, uma automação pronta para o WhatsApp da sua clínica, e o que eu aprendi montando a minha.",
+    remetente: "Pablo Ortiz <newsletter@pabloortiz.dev>",
+    // O checklist que vai no e-mail de boas-vindas. Null até a revisão (7.3 do
+    // motor comercial): sem ele, as boas-vindas saem sem o parágrafo da isca.
+    isca: null as string | null,
+  },
 } as const;
 
 export function linkWhatsApp(mensagem: string): string {

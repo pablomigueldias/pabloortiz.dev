@@ -1,59 +1,16 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { site } from "@/config/site";
+import { LIMITES, validarMensagem, type Mensagem } from "@/contato/formulario";
 import {
-  LIMITES,
-  TURNSTILE_TESTE,
-  validarMensagem,
-  type Mensagem,
-} from "@/contato/formulario";
+  dentroDoLimite,
+  dev,
+  erro,
+  ipDe,
+  lerCorpo,
+  turnstileValido,
+} from "@/servidor/protecao";
 
 // Recebe o formulário de /contato e manda um e-mail para contato@ pelo Resend.
 // Nada é guardado: a mensagem existe só no e-mail que chega na caixa.
-
-type LimitadorDeTaxa = {
-  limit: (opcoes: { key: string }) => Promise<{ success: boolean }>;
-};
-
-// Chaves de teste e envio "só no log" valem apenas no `next dev`. Não usar SITE_ENV
-// aqui: ele é variável de build e não existe no Worker em execução, então qualquer
-// regra baseada nele liberaria as chaves de teste em produção.
-const dev = process.env.NODE_ENV === "development";
-
-function erro(status: number, mensagem: string) {
-  return Response.json({ ok: false, erro: mensagem }, { status });
-}
-
-// Binding de Rate Limiting do Worker (wrangler.jsonc). No `next dev` não existe.
-async function dentroDoLimite(ip: string): Promise<boolean> {
-  let limitador: LimitadorDeTaxa | undefined;
-  try {
-    const { env } = getCloudflareContext();
-    limitador = (env as { LIMITE_CONTATO?: LimitadorDeTaxa }).LIMITE_CONTATO;
-  } catch {
-    return true;
-  }
-  if (!limitador) return true;
-  return (await limitador.limit({ key: ip })).success;
-}
-
-async function turnstileValido(token: string, ip: string): Promise<boolean> {
-  const secret =
-    process.env.TURNSTILE_SECRET_KEY ??
-    (dev ? TURNSTILE_TESTE.secret : undefined);
-  if (!secret) return false;
-
-  const corpo = new FormData();
-  corpo.set("secret", secret);
-  corpo.set("response", token);
-  if (ip) corpo.set("remoteip", ip);
-  const resposta = await fetch(
-    "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-    { method: "POST", body: corpo },
-  );
-  if (!resposta.ok) return false;
-  const { success } = (await resposta.json()) as { success?: boolean };
-  return success === true;
-}
 
 async function enviarEmail(m: Mensagem): Promise<boolean> {
   const chave = process.env.RESEND_API_KEY;
@@ -92,36 +49,17 @@ async function enviarEmail(m: Mensagem): Promise<boolean> {
 }
 
 export async function POST(request: Request) {
-  // Só o próprio site envia (o navegador sempre manda Origin num POST com fetch).
-  const origem = request.headers.get("origin");
-  if (origem !== new URL(request.url).origin && origem !== site.url)
-    return erro(403, "Origem não permitida.");
+  const corpo = await lerCorpo(request, LIMITES.corpoBytes);
+  if ("resposta" in corpo) return corpo.resposta;
 
-  if (!request.headers.get("content-type")?.startsWith("application/json"))
-    return erro(415, "Envie JSON.");
-
-  const tamanho = Number(request.headers.get("content-length") ?? 0);
-  if (tamanho > LIMITES.corpoBytes) return erro(413, "Mensagem grande demais.");
-
-  const ip = request.headers.get("cf-connecting-ip") ?? "";
-  if (!(await dentroDoLimite(ip || "sem-ip")))
+  const ip = ipDe(request);
+  if (!(await dentroDoLimite("LIMITE_CONTATO", ip)))
     return erro(
       429,
       "Muitas mensagens em pouco tempo. Tente de novo em 1 minuto.",
     );
 
-  const texto = await request.text();
-  if (texto.length > LIMITES.corpoBytes)
-    return erro(413, "Mensagem grande demais.");
-
-  let bruto: unknown;
-  try {
-    bruto = JSON.parse(texto);
-  } catch {
-    return erro(400, "Formato inválido.");
-  }
-
-  const resultado = validarMensagem(bruto);
+  const resultado = validarMensagem(corpo.bruto);
   if (!resultado.ok) return erro(400, resultado.erro);
   const mensagem = resultado.dados;
 
