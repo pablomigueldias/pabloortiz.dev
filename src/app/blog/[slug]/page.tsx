@@ -17,6 +17,7 @@ import { ID_PESSOA, ID_SITE, trilha, url } from "@/seo/schema-org";
 const TEXTO_CTA: Record<PostIndexado["pilar"], string> = {
   "ia-llms": "Quer um RAG ou LLM rodando de verdade no seu time?",
   "dados-ml": "Precisa transformar os seus dados em decisão?",
+  "automacao-negocio": "Quer saber onde o seu WhatsApp está perdendo cliente?",
 };
 
 export async function generateMetadata({
