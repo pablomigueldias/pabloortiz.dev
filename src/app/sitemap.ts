@@ -16,7 +16,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       "/",
       "/sobre",
       "/newsletter",
-      "/contato",
       "/privacidade",
     ].map((caminho) => ({
       url: `${site.url}${caminho === "/" ? "" : caminho}`,
