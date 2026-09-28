@@ -79,8 +79,7 @@ export default function Privacidade() {
 
         <h2>Newsletter</h2>
         <p>
-          Se você se inscrever na{" "}
-          <a href="/newsletter">{site.newsletter.nome}</a>, o site pede só o seu{" "}
+          Se você se inscrever na {site.newsletter.nome}, o site pede só o seu{" "}
           <strong>e-mail</strong>, para uma finalidade: mandar as edições. A
           inscrição tem duas etapas. Primeiro vai um e-mail com um link de
           confirmação, e até você clicar nele seu endereço não fica guardado em

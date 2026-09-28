@@ -1,3 +1,8 @@
+// Página escondida em 28/09/2026, junto com /newsletter/confirmar: a inscrição
+// depende de RESEND_API_KEY e TURNSTILE_SECRET_KEY, que o Worker ainda não tem.
+// Para voltar, renomear a pasta para newsletter/ e devolver o link do rodapé,
+// o convite no fim dos posts e a entrada do sitemap.
+
 import { FormularioNewsletter } from "@/components/newsletter/FormularioNewsletter";
 import { site } from "@/config/site";
 import { TURNSTILE_TESTE } from "@/contato/formulario";
