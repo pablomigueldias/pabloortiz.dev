@@ -8,9 +8,7 @@ import { linkWhatsApp, site } from "@/config/site";
 import { AlternarTema } from "./AlternarTema";
 import {
   IconeBlog,
-  IconeContato,
   IconeProjetos,
-  IconeServicos,
   IconeSobre,
   IconeCasa,
   IconeFechar,
@@ -25,9 +23,7 @@ const NAVEGACAO = [
   { href: "/", rotulo: "Home", Icone: IconeCasa },
   { href: "/blog", rotulo: "Blog", Icone: IconeBlog },
   { href: "/projetos", rotulo: "Projetos", Icone: IconeProjetos },
-  { href: "/servicos", rotulo: "Serviços", Icone: IconeServicos },
   { href: "/sobre", rotulo: "Sobre", Icone: IconeSobre },
-  { href: "/contato", rotulo: "Contato", Icone: IconeContato },
 ] as const;
 
 function ativo(pathname: string, href: string) {

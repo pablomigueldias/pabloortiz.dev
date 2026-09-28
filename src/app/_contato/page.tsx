@@ -1,3 +1,8 @@
+// Página escondida em 28/09/2026 até o Worker ter RESEND_API_KEY e
+// TURNSTILE_SECRET_KEY: sem elas todo envio cai em "não é um robô". A pasta
+// com "_" fica fora das rotas; para voltar, renomear para contato/ e devolver
+// o item ao menu e ao sitemap.
+
 import { FormularioContato } from "@/components/contato/FormularioContato";
 import { BotaoWhatsApp } from "@/components/ui/BotaoWhatsApp";
 import { site } from "@/config/site";

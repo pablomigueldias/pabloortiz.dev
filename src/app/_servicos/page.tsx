@@ -1,3 +1,6 @@
+// Página escondida em 28/09/2026: a pasta com "_" fica fora das rotas. Para
+// voltar ao ar, renomear para servicos/ e devolver o item ao menu e ao sitemap.
+
 import Link from "next/link";
 import { BotaoWhatsApp } from "@/components/ui/BotaoWhatsApp";
 import { site } from "@/config/site";

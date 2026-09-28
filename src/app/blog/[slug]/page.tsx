@@ -4,7 +4,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BioAutor } from "@/components/blog/BioAutor";
 import { CartaoPost } from "@/components/blog/CartaoPost";
-import { ConviteNewsletter } from "@/components/blog/ConviteNewsletter";
 import { Sumario } from "@/components/blog/Sumario";
 import { CTA } from "@/components/mdx/CTA";
 import { dataPorExtenso, ROTULO_PILAR } from "@/content/formatar";
@@ -159,8 +158,6 @@ export default async function Post({ params }: PageProps<"/blog/[slug]">) {
             <CTA assunto={`"${post.titulo}"`} texto={TEXTO_CTA[post.pilar]} />
           </div>
         )}
-
-        {post.pilar === "automacao-negocio" && <ConviteNewsletter />}
 
         <BioAutor />
 
